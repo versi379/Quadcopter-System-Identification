@@ -1,0 +1,150 @@
+% CHAPTER 4
+
+\chapter{Identificazione}\label{ch:ident}
+Data la crescente necessità di disporre di quadrirotori ad alte prestazioni, è necessario disporre di modelli accurati che descrivano al meglio il sistema reale, al fine di simulare ed implementare leggi di controllo ad alte prestazioni. Per questo motivo, il campo dell'identificazione di sistema è stato molto discusso negli ultimi decenni. In questo capitolo si cerca di identificare il modello dinamico di un quadrirotore.
+
+\section{Identificazione di Sistemi Dinamici}
+L'identificazione di sistema consiste nella costruzione di modelli matematici partendo da dati sperimentali (input-output). Le tecniche di identificazione di sistema possono essere caratterizzate in termini di struttura del modello, tipo del modello e dominio dei dati input-output.\\
+
+Esistono tre possibili tecniche di identificazione di sistema, che differiscono per quanto riguarda il grado di conoscenza e accesso al sistema oggetto di studio.\\
+
+Il primo approccio è quello a scatola bianca (white box) e si applica quando si ha una conoscenza completa e dettagliata del sistema in esame. Si conoscono infatti tutte le equazioni matematiche e/o le leggi fisiche che governano il comportamento del sistema. Pertanto, l'identificazione del sistema si basa semplicemente sulla stima dei parametri delle equazioni conosciute, utilizzando dati sperimentali per ottimizzare o confermare il modello. Si tratta di una tecnica molto precisa, ma che richiede una conoscenza approfondita del sistema.\\
+
+Il secondo approccio è quello a scatola grigia (gray box) e si applica quando si ha una conoscenza parziale del sistema in esame. Potrebbe essere noto solo un sottoinsieme delle equazioni o dei dettagli del sistema, mentre altri aspetti sono sconosciuti o approssimati. L'idea è quella di combinare la conoscenza parziale con dati sperimentali per costruire un modello che rappresenti accuratamente il sistema. Questo approccio è utile quando non si dispone di una comprensione completa del sistema, ma si hanno alcune informazioni chiave.\\
+
+Il terzo approccio è quello a scatola nera (black box) e si applica quando non si ha conoscenza delle equazioni o dei dettagli interni del sistema. Il sistema viene trattato appunto come una scatola nera in cui si osservano le relazioni tra l'input e l'output, ma non si cerca di comprendere il funzionamento interno. L'obiettivo è identificare un modello empirico o una funzione di trasferimento (come si vedrà nel seguito) che descriva il comportamento del sistema basandosi solo su dati sperimentali. Questo approccio è utilizzati quando il sistema è molto complesso o non è possibile ottenere informazioni dettagliate sul suo funzionamento.\\
+
+In questa tesi si utilizzerà MATLAB System Identification Toolbox \cite{sysID}, uno strumento fornito da MATLAB per l'identificazione di sistemi dinamici. Questo, tramite un'interfaccia grafica intuitiva, consente di inserire dati input-output e identificare il sistema secondo l'approccio black box. Le tre principali funzioni del tool sono le seguenti:
+\begin{enumerate}
+	\item \textbf{Data Preprocessing}. I dati input-output registrati possono essere elaborati in vario modo. Ad esempio possono essere filtrati, possono essere trasformati in segnali a media nulla oppure si può ridurre la finestra di interesse ad un determinato intervallo temporale. Queste tecniche sono molto utili in quanto i dati, così come sono stati raccolti, non sempre sono sufficienti per identificare un modello accurato.
+	\item \textbf{System Identification}. Esistono numerosi tipi di modelli identificabili. Si possono identificare sia modelli \ac{SISO} che modelli \ac{MIMO}.
+	\item \textbf{System Validation}. Una volta identificato il modello si è interessati a capire se il suo comportamento è effettivamente simile (ed eventualmente quanto) a quello reale. MATLAB fornisce una funzione che simula la risposta del modello identificato (inserendo nel sistema l'input misurato) e la sovrappone all'uscita misurata \cite{compare}. Inoltre, mostra anche la misura del \ac{NRMSE}, che descrive la bontà dell'adattamento tra la risposta simulata e i dati di misurazione di output ed è definito come mostra la \ref{nrmse}.
+\end{enumerate}
+
+\begin{equation}
+	RMSE = \sqrt{\frac{\sum_{i=1}^{n} {(\hat{y_i} - y_i)}^2}{n}}
+	\label{rmse}
+\end{equation}
+
+\begin{equation}
+	NRMSE = \frac{RMSE}{y_{max} - y_{min}}
+	\label{nrmse}
+\end{equation}
+
+\section{Simulazioni di Volo}
+Per poter identificare al meglio il sistema del quadrirotore, è necessario effettuare delle simulazioni di volo che siano in grado di descrivere i singoli aspetti della dinamica del sistema. Il sistema di simulazione configurato è assolutamente privo di controllo, quindi è impossibile effettuare una traiettoria di volo desiderata agendo direttamente sugli angoli di Eulero.\\
+
+\subsection{Controllore di Posizione}
+Si è deciso di utilizzare un controllore, fornito già implementato, in grado di mantenere il drone in stato di hovering una volta decollato e in grado di farlo muovere verso uno specifico punto dello spazio. Il controllore è un pacchetto \acs{ROS} contenente nodi (Python) di varia utilità. Alcuni nodi gestiscono l'algoritmo matematico di controllo, altri si occupano di presentare all'utente un'interfaccia grafica per controllare lo spostamento del drone. Come mostra Figura \ref{fig:drone_controller}, l'utente può effettuare le seguenti operazioni, che corrispondo a servizi \acs{ROS} nel codice sorgente:
+\begin{itemize}
+	\item \textbf{Take Off} fa decollare il drone all'altezza specificata e lo stabilizza (stato di hovering);
+	\item \textbf{Go To Point} imposta il setpoint da raggiungere verso le coordinate specificate (rispetto al sistema di rifierimento specificato, che può essere sia quello a terra che quello solidale al velivolo);
+	\item \textbf{Go Home} riporta il drone nelle componenti del piano XY iniziali in cui è avvenuto il decollo;
+	\item \textbf{Land} fa atterrare il drone, disarmando i motori.
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.43\textwidth]{gfx/ROS/drone_controller}
+	\caption[Interfaccia grafica del controllore.]{Interfaccia grafica del controllore.}
+	\label{fig:drone_controller}
+\end{figure}
+
+\subsection{Registrazione e Memorizzazione Dati}
+I dati di interesse sono gli angoli di Eulero e la forza di spinta per quanto riguarda gli input, mentre le coordinate di posizione per quanto riguarda gli output. Per registrare e memorizzare queste informazioni sono state aggiunte alcune righe di codice in alcuni nodi del controllore. In particolare, per la gestione dei dati sono state utilizzate le librerie NumPy \cite{numPy} e SciPy \cite{sciPy}.\\
+
+Prima di tutto sono stati inizializzati sette array NumPy (quattro per gli input e tre per gli output), poi sono stati riempiti all'interno del ciclo di controllo del drone utilizzando la funzione \emph{append()}, fornita dalla libreria NumPy. Il ciclo di controllo viene aggiornato con una frequenza di 100 Hz, quindi, al termine di una simulazione di volo ogni array sarà un segnale del tempo campionato con tempo di campionamento pari a 0.01 secondi. Il numero di campioni dipende dalla durata della simulazione e, ovviamente, tanto più è grande tanto più sarà precisa l'identificazione del modello. Ipotizzando che ogni volo registrato è durato in media due minuti, ogni segnale è caratterizzato da circa 12000 campioni. Sono state effettuate dieci simulazioni di volo in modo da poter identificare più modelli relativi a distinti insiemi di dati e confrontarli tra loro.\\
+
+Per trasferire i dati registrati in MATLAB, dove poi avvengono i tre passi necessari per identificare e validare il sistema, si è fatto uso della funzione \emph{savemat()} della libreria di input-output di SciPy (\emph{scipy.io}).
+
+\section{Identificazione Modelli SISO}
+L'obiettivo di questa sezione è quello di identificare delle funzioni di trasferimento tempo continue, nel dominio di Laplace, che descrivano alcuni aspetti della dinamica del quadrirotore. Infatti, dato che i segnali di input coinvolti nella dinamica del sistema sono quattro ($\phi, \theta, \psi, U1$), si può disaccoppiare il sistema (\acs{MIMO}) in quattro sottosistemi identificabili separatamente (\acs{SISO}).\\
+
+\subsection{Funzione di Trasferimento angolo di Rollio e posizione lungo Y}
+I dati utilizzati per identificare la dinamica del velivolo lungo l'asse Y sono il segnale che descrive le variazioni dell'angolo di rollio (input) e il segnale che descrive le variazioni di posizione lungo lo stesso asse (output). Entrambi i segnali si presentano già a media nulla, quindi l'unica operazione di preprocessing effettuata è stata quella di considerare uno specifico intervallo temporale (dove il segnale è significativo). I segnali utilizzati sono mostrati in Figura \ref{fig:ry_input}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{gfx/SysId/ry_input}
+	\caption[Dati input-output per identificare la dinamica del rollio.]{Dati input-output per identificare la dinamica del rollio. Input: variazione dell'angolo di rollio nel tempo. Output: variazione della posizione lungo l'asse Y nel tempo.}
+	\label{fig:ry_input}
+\end{figure}
+
+La funzione di trasferimento identificata che lega l'angolo di rollio (roll) allo spostamento del velivolo lungo l'asse Y è la seguente (\ref{fdtY}).
+
+\begin{equation}
+	W_Y(s) = \frac{-1.022s^2 + 0.6857s + 1.873}{s^3 + 0.008794s^2 + 1.456s + 0.001566}
+	\label{fdtY}
+\end{equation}
+
+Si tratta di un sistema lineare tempo continuo del terzo ordine (tre poli).\\
+
+Completata la fase di identificazione, si passa alla terza e ultima fase, cioè la validazione del sistema. La funzione \emph{compare()} \cite{compare} mostra una buona compatibilità del modello identificato con quello reale, come mostra Figura \ref{fig:ry_model}. Il \acs{NRMSE} risulta in un 71.3\% di compatibilità.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{gfx/SysId/ry_model}
+	\caption[Validazione F.D.T. Roll - asse Y.]{Validazione F.D.T. Roll - asse Y.}
+	\label{fig:ry_model}
+\end{figure}
+
+\subsection{Funzione di Trasferimento angolo di Beccheggio e posizione lungo X}
+I dati utilizzati per identificare la dinamica del velivolo lungo l'asse X sono il segnale che descrive le variazioni dell'angolo di beccheggio (input) e il segnale che descrive le variazioni di posizione lungo lo stesso asse (output). Anche qui, entrambi i segnali si presentano già a media nulla, quindi l'unica operazione di preprocessing effettuata è stata quella di considerare uno specifico intervallo temporale (dove il segnale è significativo). I segnali utilizzati sono mostrati in Figura \ref{fig:px_input}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{gfx/SysId/px_input}
+	\caption[Dati input-output per identificare la dinamica del beccheggio.]{Dati input-output per identificare la dinamica del beccheggio. Input: variazione dell'angolo di beccheggio nel tempo. Output: variazione della posizione lungo l'asse X nel tempo.}
+	\label{fig:px_input}
+\end{figure}
+
+La funzione di trasferimento identificata che lega l'angolo di beccheggio (pitch) allo spostamento del velivolo lungo l'asse X è la seguente (\ref{fdtX}).
+
+\begin{equation}
+	W_X(s) = \frac{-3.224s^2 + 3.491s + 1.71}{s^3 + 1.16s^2 + 0.1916s + 0.1929}
+	\label{fdtX}
+\end{equation}
+
+Anche in questo caso si ottiene un sistema lineare tempo continuo del terzo ordine (tre poli).\\
+
+Per quanto riguarda la validazione, la funzione \emph{compare()} \cite{compare} mostra ancora una buona compatibilità del modello identificato con quello reale, come mostra Figura \ref{fig:px_model}. Il \acs{NRMSE} risulta in un 69.7\% di compatibilità.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{gfx/SysId/px_model}
+	\caption[Validazione F.D.T. Pitch - asse X.]{Validazione F.D.T. Pitch - asse X.}
+	\label{fig:px_model}
+\end{figure}
+
+\subsection{Funzione di Trasferimento forza di Spinta e posizione lungo Z}
+I dati utilizzati per identificare la dinamica del velivolo lungo l'asse Z sono il segnale che descrive le variazioni della forza di spinta (input) e il segnale che descrive le variazioni di posizione lungo lo stesso asse (output). Il drone subito dopo il decollo entra in stato di hovering, cioè rimane fisso sull'origine del piano XY ma ad una certa quota lungo l'asse Z. Questo significa che, a differenza dei due casi precedenti, in questo caso i segnali input-output non sono a media nulla. Pertanto, nel preprocessing si rendono entrambi a media nulla, come mostra Figura \ref{fig:tz_input}.\\
+
+Il segnale di ingresso contenente le varie spinte applicate nel tempo è caratterizzato da una serie di gradini, di diversa ampiezza, in modo da evidenziare in maniera marcata il comportamento del sistema. Si è cercato di fare la stessa cosa per gli ingressi utilizzati nei casi precedenti, ma il meccanismo di stabilizzazione è risultato meno efficiente per spostamenti sul piano XY (rispetto a spostamenti lungo l'asse Z), ed è per questo che i segnali sono sicuramente più complicati da interpretare.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{gfx/SysId/tz_input}
+	\caption[Dati input-output per identificare la dinamica della spinta.]{Dati input-output per identificare la dinamica della spinta. Input: forza di spinta applicata nel tempo. Output: variazione della posizione lungo l'asse Z nel tempo.}
+	\label{fig:tz_input}
+\end{figure}
+
+La funzione di trasferimento identificata che lega la forza di spinta allo spostamento del velivolo lungo l'asse Z è la seguente (\ref{fdtZ}).
+
+\begin{equation}
+	W_Z(s) = \frac{-144s^2 + 97.89s + 25.18}{s^3 + 39.98s^2 + 12.35s + 0.7329}
+	\label{fdtZ}
+\end{equation}
+
+Si ottiene ancora un sistema lineare tempo continuo del terzo ordine (tre poli).\\
+
+Passando alla validazione, la funzione \emph{compare()} \cite{compare} mostra un'ottima compatibilità del modello identificato con quello reale, come mostra Figura \ref{fig:tz_model}. Il \acs{NRMSE} risulta in un 78.4\% di compatibilità.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{gfx/SysId/tz_model}
+	\caption[Validazione F.D.T. Spinta - asse Z.]{Validazione F.D.T. Spinta - asse Z.}
+	\label{fig:tz_model}
+\end{figure}
+
+\section{Identificazione Modello MIMO}
+

@@ -1,0 +1,79 @@
+\RequirePackage{fix-cm}
+
+\documentclass[
+openright,
+titlepage,
+numbers=noenddot,
+headinclude,
+footinclude=true,
+cleardoublepage=empty,
+abstractoff,
+BCOR=5mm,
+paper=a4,
+fontsize=13pt,
+ngerman,
+american,
+oneside,
+dottedtoc
+]{scrreprt}
+
+\input{classicthesis-config}
+
+\usepackage[left=1in,right=1in,top=1in,bottom=2in]{geometry}
+
+\addbibresource{Bibliography.bib}
+
+\usepackage{microtype}
+
+\captionsetup[figure]{labelfont=bf}
+
+\setcounter{MaxMatrixCols}{12} % 12 states
+
+\interfootnotelinepenalty=10000
+
+\DefineBibliographyStrings{english}{ % rename backref
+  backrefpage={cit. a p.},
+  backrefpages={cit. a pp.}
+}
+
+\usepackage{float}
+
+\begin{document}
+
+\frenchspacing
+\raggedbottom
+\selectlanguage{american}
+\pagenumbering{roman}
+\pagestyle{plain}
+
+\renewcommand{\contentsname}{Indice} % rename ToC
+\renewcommand{\listfigurename}{Lista delle Figure} % rename LoF
+\renewcommand{\listtablename}{Lista delle Tabelle} % rename LoT
+\renewcommand{\lstlistlistingname}{Lista dei Codici} % rename LoL
+\renewcommand{\bibname}{Bibliografia e Sitografia} % rename bib
+\renewcommand{\figurename}{Figura} % rename fig
+
+% FRONT
+\include{FrontBackmatter/Titlepage}
+\newpage
+\
+\newpage
+\cleardoublepage\include{FrontBackmatter/Dedication}
+\newpage
+\
+\newpage
+\pagestyle{scrheadings}
+\cleardoublepage\include{FrontBackmatter/Contents}
+
+% MAIN
+\cleardoublepage\pagenumbering{arabic}
+\include{Chapters/Chapter01}
+\include{Chapters/Chapter02}
+\include{Chapters/Chapter03}
+\include{Chapters/Chapter04}
+\include{Chapters/Chapter05}
+
+% BACK
+\cleardoublepage\include{FrontBackmatter/Bibliography}
+
+\end{document}
