@@ -30,7 +30,7 @@ Nel seguito si prenderà come riferimento un quadrirotore con struttura a X dato
 \section{Modellazione Quadrirotore}
 Un robot, nello specifico un quadrirotore, può essere considerato come un corpo rigido che trasla e ruota in uno spazio tridimensionale. Pertanto, è necessario costruire un modello matematico in grado di descrivere in modo compatto il suo spostamento.\\
 
-Il modello fisico-matematico di un quadrirotore si può trovare con diversi formalismi, quali quello di Newton-Eulero e quello di Lagrange \cite{modelloQuad1} \cite{modelloQuad2} \cite{modelloQuad3}.\\
+Il modello fisico-matematico di un quadrirotore si può trovare con diversi formalismi, quali quello di Newton-Eulero e quello di Lagrange \cite{modelloQuad1} \cite{modelloQuad2} \cite{modelloQuad3}. Nel seguito si descrive il primo.\\
 
 Nello specifico, si tratta di un sistema a sei gradi di libertà - 6 \ac{DoF} - quindi è descrivibile utilizzando dodici stati\footnote{Per ogni grado di libertà si considerano due stati: uno descrive la variabile considerata in un determinato istante di tempo $t$, l'altro ne descrive l'evoluzione nel tempo. Nel caso di un sistema tempo discreto è sufficiente calcolare la variabile nell'istante discreto successivo $t + T_C$, dove $T_C$ è il periodo di campionamento (Metodo Differenze Finite). Siccome $T_C$ è un tempo costante si può normalizzare il periodo di campionamento rendendolo unitario. Nel caso di un sistema tempo continuo si estende lo stesso ragionamento tramite l'operatore di derivata (Metodo Eulero). Se ad esempio la variabile considerata rappresenta una posizione, la sua evoluzione è una velocità.}: sei per la posizione, sei per l'assetto. Il sistema pertanto risulta sotto-attuato perché è caratterizzato da sei gradi di libertà, ma il suo movimento nello spazio può essere controllato soltanto da quattro attuatori (uno per ogni elica). In particolare, variando le velocità angolari delle eliche del velivolo è possibile effettuare tutti i movimenti.
 
@@ -42,7 +42,7 @@ Nello specifico, si tratta di un sistema a sei gradi di libertà - 6 \ac{DoF} - 
 
 \subsection{Sistemi di Riferimento}
 
-Prima di poter descrivere le equazioni che governano un velivolo, come il quadrirotore, è necessario definire le coordinate di riferimento in cui si intende farlo. Sono necessari due sistemi di riferimento per descrivere la posizione e l'assetto del drone nello spazio: un sistema \emph{mondo} (earth frame o $E$), inerziale, e un sistema \emph{drone} (body frame o $B$) solidale al velivolo in movimento, le cui dinamiche possono essere espresse rispetto alla terna fissa. La terna fissa (inerziale) è una terna dove si può considerare valida la prima legge di Newton.\\
+Prima di poter descrivere le equazioni che governano un velivolo, come il quadrirotore, è necessario definire le coordinate di riferimento in cui si intende farlo. Sono necessari due sistemi di riferimento per descrivere la posizione e l'assetto del drone nello spazio: un sistema \emph{mondo} (earth frame o $E$) inerziale, e un sistema \emph{drone} (body frame o $B$) solidale al velivolo in movimento, le cui dinamiche possono essere espresse rispetto alla terna fissa. La terna fissa (inerziale) è una terna dove si può considerare valida la prima legge di Newton.\\
 
 Il sistema \emph{mondo} può essere definito definito secondo le coordinate \ac{LTP}, relative al piano tangente ad ogni punto della superficie terrestre. Esistono due convenzioni: il sistema \ac{ENU} è definito da una terna i cui versori sono orientati verso Est, Nord (piano tangente) e verso l'esterno della terra (Figura \ref{fig:fixedRef}), il sistema \ac{NED} è definito analogamente con Est e Nord scambiati e punta verso l'interno della terra.
 
@@ -58,7 +58,7 @@ Il sistema \emph{drone} ha origine nel centro di massa del quadrirotore e, conve
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{gfx/abc_frame}
-    \caption[Sistemi di riferimento \acs{NED} e \acs{ABC}.]{Sistemi di riferimento \acs{NED} e \acs{ABC}, coinvolti nella modellazione di un quadrirotore.}
+    \caption[Sistemi di riferimento \acs{NED} e \acs{ABC}.]{Sistemi di riferimento \acs{NED} e \acs{ABC}, utilizzati nella modellazione di un quadrirotore.}
     \label{fig:abc_frame}
 \end{figure}
 
@@ -69,7 +69,7 @@ Dato che il drone trasla e ruota, è necessario stabilire per entrambi i moti un
 \section*{Traslazioni}
 Per le traslazioni è sufficiente utilizzare la somma vettoriale nello spazio a tre dimensioni di riferimento. Infatti, dato un generico punto $P$ rappresentato nel sistema di riferimento del velivolo $O_{ABC}$ dal vettore $v^P_{ABC}$, esiste un vettore di traslazione che permette di rappresentare lo stesso punto nel sistema di riferimento a terra. Nello specifico:
 \[ v^p_{NED} = v^p_{ABC} + t_{NED} \]
-dove $v^P_{NED}$ è il vettore che rappresenta il punto $P$ nel sistema di riferimento a terra e $t_{NED}$ il vettore di traslazione. 
+dove $v^P_{NED}$ è il vettore che rappresenta il punto $P$ nel sistema di riferimento a terra e $t_{NED}$ è il vettore di traslazione. 
 
 \section*{Rotazioni}
 Le rotazioni possono essere descritte assumendo il corpo rigido fisso (in termini di posizione) nell'origine di un sistema di riferimento, con i tre versori del sistema che cambiano sotto l'effetto di rotazioni. Quindi, la rotazione è una relazione tra un sistema di riferimento fisso e lo stesso sistema (cioè con stessa origine) ruotato rispetto ai tre angoli di Eulero (cioè rispetto ai tre assi). La rotazione di un angolo intorno ad un asse può essere rappresentata da una matrice le cui colonne corrispondono ai versori del sistema ruotato. Considerando i tre possibili angoli di rotazione relativi ai tre assi del sistema di riferimento, si ottengono le seguenti tre matrici di rotazione ortonormali, cioè tali che $R^\top = R^{-1}$.

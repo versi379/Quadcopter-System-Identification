@@ -3,6 +3,8 @@
 \chapter{Identificazione}\label{ch:ident}
 Data la crescente necessità di disporre di quadrirotori ad alte prestazioni, è necessario disporre di modelli accurati che descrivano al meglio il sistema reale, al fine di simulare ed implementare leggi di controllo ad alte prestazioni. Per questo motivo, il campo dell'identificazione di sistema è stato molto discusso negli ultimi decenni. In questo capitolo si cerca di identificare il modello dinamico di un quadrirotore.
 
+% ------------------------------ INTRO ------------------------------
+
 \section{Identificazione di Sistemi Dinamici}
 L'identificazione di sistema consiste nella costruzione di modelli matematici partendo da dati sperimentali (input-output). Le tecniche di identificazione di sistema possono essere caratterizzate in termini di struttura del modello, tipo del modello e dominio dei dati input-output.\\
 
@@ -31,6 +33,8 @@ In questa tesi si utilizzerà MATLAB System Identification Toolbox \cite{sysID},
 	\label{nrmse}
 \end{equation}
 
+% ------------------------------ SIM FLIGHTS ------------------------------
+
 \section{Simulazioni di Volo}
 Per poter identificare al meglio il sistema del quadrirotore, è necessario effettuare delle simulazioni di volo che siano in grado di descrivere i singoli aspetti della dinamica del sistema. Il sistema di simulazione configurato è assolutamente privo di controllo, quindi è impossibile effettuare una traiettoria di volo desiderata agendo direttamente sugli angoli di Eulero.\\
 
@@ -56,6 +60,8 @@ I dati di interesse sono gli angoli di Eulero e la forza di spinta per quanto ri
 Prima di tutto sono stati inizializzati sette array NumPy (quattro per gli input e tre per gli output), poi sono stati riempiti all'interno del ciclo di controllo del drone utilizzando la funzione \emph{append()}, fornita dalla libreria NumPy. Il ciclo di controllo viene aggiornato con una frequenza di 100 Hz, quindi, al termine di una simulazione di volo ogni array sarà un segnale del tempo campionato con tempo di campionamento pari a 0.01 secondi. Il numero di campioni dipende dalla durata della simulazione e, ovviamente, tanto più è grande tanto più sarà precisa l'identificazione del modello. Ipotizzando che ogni volo registrato è durato in media due minuti, ogni segnale è caratterizzato da circa 12000 campioni. Sono state effettuate dieci simulazioni di volo in modo da poter identificare più modelli relativi a distinti insiemi di dati e confrontarli tra loro.\\
 
 Per trasferire i dati registrati in MATLAB, dove poi avvengono i tre passi necessari per identificare e validare il sistema, si è fatto uso della funzione \emph{savemat()} della libreria di input-output di SciPy (\emph{scipy.io}).
+
+% ------------------------------ SISO ------------------------------
 
 \section{Identificazione Modelli SISO}
 L'obiettivo di questa sezione è quello di identificare delle funzioni di trasferimento tempo continue, nel dominio di Laplace, che descrivano alcuni aspetti della dinamica del quadrirotore. Infatti, dato che i segnali di input coinvolti nella dinamica del sistema sono quattro ($\phi, \theta, \psi, U1$), si può disaccoppiare il sistema (\acs{MIMO}) in quattro sottosistemi identificabili separatamente (\acs{SISO}).\\
@@ -145,6 +151,8 @@ Passando alla validazione, la funzione \emph{compare()} \cite{compare} mostra un
 	\caption[Validazione F.D.T. Spinta - asse Z.]{Validazione F.D.T. Spinta - asse Z.}
 	\label{fig:tz_model}
 \end{figure}
+
+% ------------------------------ MIMO ------------------------------
 
 \section{Identificazione Modello MIMO}
 
