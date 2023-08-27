@@ -3,7 +3,9 @@
 \chapter{ROS}\label{ch:ros}
 \ac{ROS} \cite{ROS} nasce nel 2007 sotto il nome di Switchyard presso lo Stanford Artificial Intelligence Laboratory (SAIL), centro di eccellenza per la ricerca sull'intelligenza artificiale della Stanford University, in California. Nello specifico, viene sviluppato inizialmente da due dottorandi dell'università a capo del programma Personal Robotics (PR) per fornire supporto al progetto Stanford Artificial Robot (STAIR). Nel 2008 lo sviluppo del progetto progredisce presso il Willow Garage (diventando \acs{ROS}), ente di ricerca e incubatore nel campo della robotica, che versa il proprio contributo approfondendo i principi con cui il progetto nasce e realizzando le prime versioni testate.\\
 
-Brevemente, si tratta di un middleware open source basato su sistemi operativi Linux (e.g. Ubuntu) che consente comunicazione tra processi attraverso un meccanismo basato sul passaggio di messaggi. Praticamente, comprende un insieme di librerie, strumenti e convenzioni che semplificano lo sviluppo di software impiegato nei robot.
+Brevemente, si tratta di un middleware open source basato su sistemi operativi Linux (e.g. Ubuntu) che consente comunicazione tra processi attraverso un meccanismo basato sul passaggio di messaggi. Praticamente, comprende un insieme di librerie, strumenti e convenzioni che semplificano lo sviluppo di software impiegato nei robot.\\
+
+\acs{ROS} non è stato inizialmente progettato e rilasciato per un uso di tipo industriale, ma con l'obiettivo di velocizzare la ricerca sulla robotica. Per questo motivo, alcuni aspetti come la sicurezza oppure il supporto per programmi real-time non sono stati considerati essenziali. L'espansione di \acs{ROS} in ambito industriale ha dato vita alla creazione di \acs{ROS} 2 \cite{ROS2}: una riprogettazione completa del framework che mantiene le funzioni principali e risolve le carenze riscontrate nella prima versione.
 
 % ------------------------------ FS LEVEL ------------------------------
 
@@ -100,16 +102,16 @@ In questo lavoro di tesi, si è fatto uso della repository \emph{iq\_sim} di Int
 
 Dopo aver clonato la repository sul computer utilizzato, per lanciare gazebo con il mondo desiderato basta eseguire da terminale il seguente comando.\\
 
-\begin{lstlisting}[language=bash]
+\begin{lstlisting}[language=bash, numbers=none]
   roslaunch iq_sim runway.launch
 \end{lstlisting}
 
 \subsection{ArduCopter}
 Gli aeromobili a pilotaggio remoto (\acs{UAV}) sono sistemi che richiedono una rapida risposta al variare dei dati forniti dai sensori a bordo, per cui risulta fondamentale per il controllo del volo un software di autopilotaggio. Esistono diverse soluzioni, ma per questa tesi è stato considerato il software ArduCopter, cioè la versione per \acs{UAV} del più generale software ArduPilot.\\
 
-\ac{SITL} è un simulatore che consente di eseguire ArduCopter sul computer, senza l'utilizzo di alcun hardware. Per lanciare ArduCopter si esegue il seguente comando da terminale, assicurandosi di essere nella directory corretta di ArduPilot. Le Figure \ref{fig:arduCopter} e \ref{fig:consArduCopter} mostrano le interfacce grafiche contenenti tutte le informazioni sullo stato del velivolo e altri parametri.\\
+\ac{SITL} \cite{sitl} è un simulatore che consente di eseguire ArduCopter sul computer, senza l'utilizzo di alcun hardware. Per lanciare ArduCopter si esegue il seguente comando da terminale, assicurandosi di essere nella directory corretta di ArduPilot. Le Figure \ref{fig:arduCopter} e \ref{fig:consArduCopter} mostrano le interfacce grafiche contenenti tutte le informazioni sullo stato del velivolo e altri parametri.\\
 
-\begin{lstlisting}[language=bash]
+\begin{lstlisting}[language=bash, numbers=none]
   ./sim_vehicle.py -v ArduCopter -f gazebo-iris --console --mavproxy-args="--streamrate=100"
 \end{lstlisting}
 
@@ -134,7 +136,7 @@ MAVROS \cite{mavros} è l'estensione di MAVLink in \acs{ROS}. Tra le tante carat
 
 Per completare la configurazione del sistema di simulazione si lancia il file \emph{apm.launch} con il seguente comando da terminale.\\
 
-\begin{lstlisting}[language=bash]
+\begin{lstlisting}[language=bash, numbers=none]
   roslaunch mavros apm.launch
 \end{lstlisting}
 

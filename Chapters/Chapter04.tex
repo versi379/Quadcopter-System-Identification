@@ -39,35 +39,44 @@ In questa tesi si utilizzerà MATLAB System Identification Toolbox \cite{sysID},
 Per poter identificare al meglio il sistema del quadrirotore, è necessario effettuare delle simulazioni di volo che siano in grado di descrivere i singoli aspetti della dinamica del sistema. Il sistema di simulazione configurato è assolutamente privo di controllo, quindi è impossibile effettuare una traiettoria di volo desiderata agendo direttamente sugli angoli di Eulero.\\
 
 \subsection{Controllore di Posizione}
-Si è deciso di utilizzare un controllore, fornito già implementato, in grado di mantenere il drone in stato di hovering una volta decollato e in grado di farlo muovere verso uno specifico punto dello spazio. Il controllore è un pacchetto \acs{ROS} contenente nodi (Python) di varia utilità. Alcuni nodi gestiscono l'algoritmo matematico di controllo, altri si occupano di presentare all'utente un'interfaccia grafica per controllare lo spostamento del drone. Come mostra Figura \ref{fig:drone_controller}, l'utente può effettuare le seguenti operazioni, che corrispondo a servizi \acs{ROS} nel codice sorgente:
+Si è deciso di utilizzare un controllore, fornito già implementato, in grado di mantenere il drone in stato di hovering una volta decollato e in grado di farlo muovere verso uno specifico punto dello spazio. L'anello più interno è responsabile del controllo di assetto (Attitude Controller), quello più esterno del controllo di posizione (Position Controller), come mostra Figura \ref{fig:quadControlSystem}. Per un corretto funzionamento di questo schema di controllo è necessario il principio di disaccoppiamento in frequenza: la larghezza di banda del sistema di controllo di assetto (anello interno) deve essere significativamente maggiore rispetto a quella del sistema di controllo di posizione (anello esterno). In altre parole, la dinamica dell’anello interno deve rispondere molto più velocemente rispetto alla dinamica di quello esterno. In questo modo, il regolatore di posizione può essere progettato in modo indipendente dal regolatore di assetto.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{gfx/quadControlSystem}
+	\caption[Schema di controllo di un quadrirotore.]{Schema di controllo di un quadrirotore. L'anello più interno è responsabile del controllo di assetto (Attitude Controller), quello più esterno del controllo di posizione (Position Controller).}
+	\label{fig:quadControlSystem}
+\end{figure}
+
+Il controllore è un pacchetto \acs{ROS} contenente nodi (Python) di varia utilità. Alcuni nodi gestiscono l'algoritmo matematico di controllo, altri si occupano di presentare all'utente un'interfaccia grafica per controllare lo spostamento del drone. Come mostra Figura \ref{fig:drone_controller}, l'utente può effettuare le seguenti operazioni, che corrispondo a servizi \acs{ROS} nel codice sorgente:
 \begin{itemize}
 	\item \textbf{Take Off} fa decollare il drone all'altezza specificata e lo stabilizza (stato di hovering);
-	\item \textbf{Go To Point} imposta il setpoint da raggiungere verso le coordinate specificate (rispetto al sistema di rifierimento specificato, che può essere sia quello a terra che quello solidale al velivolo);
+	\item \textbf{Go To Point} imposta il setpoint da raggiungere verso le coordinate specificate (rispetto al sistema di riferimento specificato, che può essere sia quello a terra che quello solidale al velivolo);
 	\item \textbf{Go Home} riporta il drone nelle componenti del piano XY iniziali in cui è avvenuto il decollo;
 	\item \textbf{Land} fa atterrare il drone, disarmando i motori.
 \end{itemize}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.43\textwidth]{gfx/ROS/drone_controller}
+	\includegraphics[width=0.4\textwidth]{gfx/ROS/drone_controller}
 	\caption[Interfaccia grafica del controllore.]{Interfaccia grafica del controllore.}
 	\label{fig:drone_controller}
 \end{figure}
 
 \subsection{Registrazione e Memorizzazione Dati}
-I dati di interesse sono gli angoli di Eulero e la forza di spinta per quanto riguarda gli input, mentre le coordinate di posizione per quanto riguarda gli output. Per registrare e memorizzare queste informazioni sono state aggiunte alcune righe di codice in alcuni nodi del controllore. In particolare, per la gestione dei dati sono state utilizzate le librerie NumPy \cite{numPy} e SciPy \cite{sciPy}.\\
+I dati di interesse sono gli angoli di Eulero e la forza di spinta per quanto riguarda gli input e le coordinate di posizione per quanto riguarda gli output. Per registrare e memorizzare queste informazioni sono state aggiunte alcune righe di codice in alcuni nodi del controllore. In particolare, per la gestione dei dati sono state utilizzate le librerie NumPy \cite{numPy} e SciPy \cite{sciPy}.\\
 
 Prima di tutto sono stati inizializzati sette array NumPy (quattro per gli input e tre per gli output), poi sono stati riempiti all'interno del ciclo di controllo del drone utilizzando la funzione \emph{append()}, fornita dalla libreria NumPy. Il ciclo di controllo viene aggiornato con una frequenza di 100 Hz, quindi, al termine di una simulazione di volo ogni array sarà un segnale del tempo campionato con tempo di campionamento pari a 0.01 secondi. Il numero di campioni dipende dalla durata della simulazione e, ovviamente, tanto più è grande tanto più sarà precisa l'identificazione del modello. Ipotizzando che ogni volo registrato è durato in media due minuti, ogni segnale è caratterizzato da circa 12000 campioni. Sono state effettuate dieci simulazioni di volo in modo da poter identificare più modelli relativi a distinti insiemi di dati e confrontarli tra loro.\\
 
-Per trasferire i dati registrati in MATLAB, dove poi avvengono i tre passi necessari per identificare e validare il sistema, si è fatto uso della funzione \emph{savemat()} della libreria di input-output di SciPy (\emph{scipy.io}).
+Per trasferire i dati registrati in MATLAB, dove poi avvengono i tre passi necessari per identificare e validare il sistema, si è fatto uso della funzione \emph{savemat()} \cite{savemat} della libreria di input-output di SciPy (\emph{scipy.io}).
 
 % ------------------------------ SISO ------------------------------
 
 \section{Identificazione Modelli SISO}
-L'obiettivo di questa sezione è quello di identificare delle funzioni di trasferimento tempo continue, nel dominio di Laplace, che descrivano alcuni aspetti della dinamica del quadrirotore. Infatti, dato che i segnali di input coinvolti nella dinamica del sistema sono quattro ($\phi, \theta, \psi, U1$), si può disaccoppiare il sistema (\acs{MIMO}) in quattro sottosistemi identificabili separatamente (\acs{SISO}).\\
+L'obiettivo di questa sezione è quello di identificare delle funzioni di trasferimento tempo continue, nel dominio di Laplace, che descrivano alcuni aspetti della dinamica del quadrirotore\footnote{I sistemi \acs{SISO} coinvolti nella dinamica del quadrirotore possono essere approssimati con modelli di tipo lineare. Per questo si è in grado di trovare delle funzioni di trasferimento in grado di descrivere con una buona precisione i sottosistemi del modello non lineare del quadrirotore.}. Infatti, dato che i segnali di input coinvolti nella dinamica del sistema sono quattro ($\phi, \theta, \psi, T$), si può disaccoppiare il sistema (\acs{MIMO}) in quattro sottosistemi identificabili separatamente (\acs{SISO}) \cite{decoupledDynamics}. Non è oggetto della tesi l'identificazione della dinamica dell'angolo di yaw, quindi si identificano nel seguito tre funzioni di trasferimento.
 
 \subsection{Funzione di Trasferimento angolo di Rollio e posizione lungo Y}
-I dati utilizzati per identificare la dinamica del velivolo lungo l'asse Y sono il segnale che descrive le variazioni dell'angolo di rollio (input) e il segnale che descrive le variazioni di posizione lungo lo stesso asse (output). Entrambi i segnali si presentano già a media nulla, quindi l'unica operazione di preprocessing effettuata è stata quella di considerare uno specifico intervallo temporale (dove il segnale è significativo). I segnali utilizzati sono mostrati in Figura \ref{fig:ry_input}.
+I dati utilizzati per identificare la dinamica del velivolo lungo l'asse Y sono il segnale che descrive le variazioni dell'angolo di rollio (input) e il segnale che descrive le variazioni di posizione lungo lo stesso asse (output). Entrambi i segnali si presentano già a media nulla\footnote{Il processo che elimina la media di un segnale e lo rende a media nulla viene denominato detrending e consente di rimuovere gli effetti del valor medio per mostrare solo le differenze significative. Consente quindi di identificare in modo più preciso l'andamento del segnale.}, quindi l'unica operazione di preprocessing effettuata è stata quella di considerare uno specifico intervallo temporale (dove il segnale è significativo). I segnali utilizzati sono mostrati in Figura \ref{fig:ry_input}. Il segnale di input, relativo all'angolo di rollio, mostra una brusca variazione prima di assestarsi a zero. Questo accade perché al termine della simulazione di volo, quando si fa atterrare il drone, il controllore cerca di stabilizzare il drone nel punto del piano XY dove si trova. Ma non appena il drone inizia il processo di atterraggio, il controllore smette di inviare controlli relativi all'assetto del velivolo e l'angolo di rollio (in questo caso) rimane nullo fino al termine della simulazione.
 
 \begin{figure}[H]
 	\centering

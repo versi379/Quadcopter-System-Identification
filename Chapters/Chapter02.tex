@@ -44,16 +44,23 @@ Nello specifico, si tratta di un sistema a sei gradi di libertà - 6 \ac{DoF} - 
 
 Prima di poter descrivere le equazioni che governano un velivolo, come il quadrirotore, è necessario definire le coordinate di riferimento in cui si intende farlo. Sono necessari due sistemi di riferimento per descrivere la posizione e l'assetto del drone nello spazio: un sistema \emph{mondo} (earth frame o $E$) inerziale, e un sistema \emph{drone} (body frame o $B$) solidale al velivolo in movimento, le cui dinamiche possono essere espresse rispetto alla terna fissa. La terna fissa (inerziale) è una terna dove si può considerare valida la prima legge di Newton.\\
 
-Il sistema \emph{mondo} può essere definito definito secondo le coordinate \ac{LTP}, relative al piano tangente ad ogni punto della superficie terrestre. Esistono due convenzioni: il sistema \ac{ENU} è definito da una terna i cui versori sono orientati verso Est, Nord (piano tangente) e verso l'esterno della terra (Figura \ref{fig:fixedRef}), il sistema \ac{NED} è definito analogamente con Est e Nord scambiati e punta verso l'interno della terra.
+Il sistema \emph{mondo} può essere definito secondo le coordinate \ac{LTP}, relative al piano tangente ad ogni punto della superficie terrestre. Esistono due convenzioni: il sistema \ac{ENU} è definito da una terna i cui versori sono orientati verso Est, Nord (piano tangente) e verso l'esterno della terra (Figura \ref{fig:fixedRef}), il sistema \ac{NED} è definito analogamente con Est e Nord scambiati e punta verso l'interno della terra.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.3\textwidth]{gfx/ltp_enu}
+    \includegraphics[width=0.29\textwidth]{gfx/ltp_enu}
     \caption[Sistema di riferimento \acs{ENU}.]{Sistema di riferimento \acs{ENU}, tangente alla superficie terrestre.}
     \label{fig:fixedRef}
 \end{figure}
 
-Il sistema \emph{drone} ha origine nel centro di massa del quadrirotore e, convenzionalmente, i tre assi sono considerati come in Figura \ref{fig:abc_frame}. In letteratura questa terna mobile prende il nome di \ac{ABC}.
+Il sistema \emph{drone} ha origine nel centro di massa del quadrirotore e in letteratura viene definito come \ac{ABC}. Questa terna mobile varia a seconda della configurazione dei rotori del quadrirotore, come mostra Figura \ref{fig:+andx}. Nel caso di un quadrirotore con disposizione a + si considerano gli assi x e y coincidenti con i due assi principali del quadrirotore. Nel caso in oggetto (disposizione a X), invece, gli assi x e y corrispondono alle bisettrici dei due assi principali del quadrirotore.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.53\textwidth]{gfx/+andx}
+    \caption[\acs{ABC} di un QUAD I e di un QUAD X.]{\acs{ABC} di un QUAD I e di un QUAD X.}
+    \label{fig:+andx}
+\end{figure}
 
 \begin{figure}[H]
     \centering
@@ -80,25 +87,25 @@ Le rotazioni possono essere descritte assumendo il corpo rigido fisso (in termin
 	R_x(\phi) = 
 	\begin{bmatrix}
 		1 & 0 & 0\\
-		0 & cos(\phi) & sin(\phi)\\
-		0 & -sin(\phi) & cos(\phi)
+		0 & \cos(\phi) & \sin(\phi)\\
+		0 & -\sin(\phi) & \cos(\phi)
 	\end{bmatrix}
 	\end{equation}
 	\item Rotazione intorno all'asse y:
 	\begin{equation}
 	R_y(\theta) = 
 	\begin{bmatrix}
-		cos(\theta) & 0 & sin(\theta)\\
+		\cos(\theta) & 0 & \sin(\theta)\\
 		0 & 1 & 0\\
-		-sin(\theta) & 0 & cos(\theta)
+		-\sin(\theta) & 0 & \cos(\theta)
 	\end{bmatrix}
 	\end{equation}
 	\item Rotazione introno all'asse z:
 	\begin{equation}
 	R_z(\psi) = 
 	\begin{bmatrix}
-		cos(\psi) & sin(\psi) & 0\\
-		-sin(\psi) & cos(\psi) & 0\\
+		\cos(\psi) & \sin(\psi) & 0\\
+		-\sin(\psi) & \cos(\psi) & 0\\
 		0 & 0 & 1
 	\end{bmatrix}
 	\end{equation}
@@ -142,7 +149,16 @@ s(\psi)c(\theta) & c(\theta)c(\psi)+s(\phi)s(\theta)s(\psi) & s(\theta)c(\phi)s(
 
 \subsection{Modello Non Lineare}
 
-I sei stati di posizione descrivono la posizione del drone e la sua evoluzione nel tempo, cioè come il velivolo trasla rispetto al sistema a terra. I sei stati di assetto descrivono l'assetto del drone e la sua evoluzione nel tempo, cioè come il velivolo ruota introno all'origine del sistema di riferimento traslato. A tal proposito, in aeronautica si utilizzano gli angoli di Eulero: rollio (roll o $\phi$), beccheggio (pitch o $\theta$) e imbardata (yaw o $\psi$), già visti nel paragrafo precedente relativo alle rotazioni. Si definiscono pertanto quattro vettori tridimensionali per rappresentare i dodici stati del modello come segue.
+I sei stati di posizione descrivono la posizione del drone e la sua evoluzione nel tempo, cioè come il velivolo trasla rispetto al sistema a terra. I sei stati di assetto descrivono l'assetto del drone e la sua evoluzione nel tempo, cioè come il velivolo ruota introno all'origine del sistema di riferimento traslato. A tal proposito, in aeronautica si utilizzano gli angoli di Eulero: rollio (roll o $\phi$), beccheggio (pitch o $\theta$) e imbardata (yaw o $\psi$); che indicano rispettivamente una rotazione intorno agli assi Y, X e Z, come mostra Figura  \ref{fig:quadModel}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{gfx/quad_model}
+    \caption[Modello fisico del quadrirotore, con velocità angolari dei rotori.]{Modello fisico del quadrirotore, dove $\Omega_i$ e $f_i $ ($i = 1,2,3,4$) sono rispettivamente le velocità angolari dei rotori e le relative forze di spinta generate.}
+    \label{fig:quadModel}
+\end{figure}
+
+Si definiscono quattro vettori tridimensionali per rappresentare i dodici stati del modello. I primi due vettori sono definiti rispetto al sistema di riferimento \emph{mondo} ($E$) e rappresentano rispettivamente il vettore di posizione che identifica la posizione del drone nello spazio (\ref{statePos}) e il vettore di assetto che descrive (secondo gli angoli di Eulero) come il drone è ruotato intorno agli assi coordinati (\ref{stateEul}).
 
 \begin{equation}
 \Gamma_E = \begin{bmatrix}
@@ -158,6 +174,8 @@ x & y & z
 \label{stateEul}
 \end{equation}
 
+I restanti vettori sono definiti rispetto al sistema di riferimento \emph{drone} ($B$) e rappresentano rispettivamente la velocità lineare (\ref{stateVelLin}) e la velocità angolare (\ref{stateVelAng}) del quadrirotore.
+
 \begin{equation}
 V_B = \begin{bmatrix}
 u & v & w
@@ -172,47 +190,45 @@ p & q & r
 \label{stateVelAng}
 \end{equation}
 
-La \ref{statePos} e la \ref{stateEul} mostrano rispettivamente i vettori di posizione e assetto del quadrirotore rispetto al sistema di riferimento \emph{mondo} ($E$), mentre la \ref{stateVelLin} e la \ref{stateVelAng} mostrano rispettivamente i vettori velocità lineare e velocità angolare nel sistema di riferimento \emph{drone} ($B$). Il modello del quadrirotore considerato è riassunto dalla Figura \ref{fig:quadModel}, dove sono facilmente riscontrabili i tre stati di posizione $x, y, z$ e i tre stati di assetto $\phi, \theta, \psi$. Inoltre, nella stessa figura sono riportate le velocità angolari dei rotori del quadrirotore e il relativo verso di rotazione (nel capitolo sul controllo del quadrirotore sarà fornita una spiegazione a riguardo).
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{gfx/quad_model}
-    \caption[Modello fisico del quadrirotore, con velocità angolari dei rotori.]{Modello fisico del quadrirotore, dove $\Omega_i$ ($i = 1,2,3,4$) sono le velocità angolari dei rotori.}
-    \label{fig:quadModel}
-\end{figure}
-
 Il moto di traslazione del velivolo è definito dall'equazione \ref{eqSist1} seguente, che mette in relazione $\Gamma_E$ e $V_B$ tramite la matrice $R_{BE}$ (\acs{DCM} definita dalla \ref{dcmBE}). 
 
 \begin{equation}
-	\Dot{\Gamma_E} = R_{BE}V_B
+	\dt{\Gamma_E} = R_{BE}V_B
 	\label{eqSist1}
 \end{equation}
 
-Il moto di rotazione, invece, è definito dall'equazione \ref{eqSist2}, che mette in relazione $\Theta_E$ e $\omega_B$ tramite una matrice $T$ definita come segue.
+Il moto di rotazione, invece, mette in relazione $\Theta_E$ e $\omega_B$. In questo caso entra in gioco una nuova matrice $J$ che consente di trasformare le variazioni degli angoli di Eulero intorno ai rispettivi assi ($\dt{\phi}, \dt{\theta}, \dt{\psi}$) nel vettore di velocità angolare del quadrirotore $\omega_B$, come mostra l'equazione \ref{jacobian}.
 
 \begin{equation}
-T
-=
-\begin{bmatrix}
-1 & sin(\phi)tan(\theta) & cos(\phi)tan(\theta)\\
-0 & cos(\phi) & -sin(\phi)\\
-0 & \frac{sin(\phi)}{sin(\theta)} & \frac{cos(\phi)}{cos(\theta)}
-\end{bmatrix}
-\label{matT}
+	J\dt{\Theta_E} = \omega_B
+	\label{jacobian}
 \end{equation}
 
+Considerando la matrice inversa (\ref{invJacobian}) si ottiene l'equazione del moto di rotazione cercata (\ref{eqSist2}).
+
 \begin{equation}
-	\Dot{\Theta_E} = T\omega_B
+	\dt{\Theta_E} = J^{-1}\omega_B
 	\label{eqSist2}
 \end{equation}
 
-L’effetto giroscopico consiste nella tendenza di un qualsiasi sistema rotante a mantenere il suo asse di rotazione. Risulta quindi più difficile cambiare l’assetto, ma siccome l’effetto è tanto più forte quanto più la velocità di rotazione è grande, e in questo caso non ci sono grandi velocità, l’effetto è trascurabile. Si può dimostrare che trascurandolo, il modello può essere quindi scritto con il seguente sistema di equazioni nel sistema di riferimento \emph{drone}.
+\begin{equation}
+J^{-1}
+=
+\begin{bmatrix}
+1 & \sin(\phi)\tan(\theta) & \cos(\phi)\tan(\theta)\\
+0 & \cos(\phi) & -\sin(\phi)\\
+0 & \frac{\sin(\phi)}{\sin(\theta)} & \frac{\cos(\phi)}{\cos(\theta)}
+\end{bmatrix}
+\label{invJacobian}
+\end{equation}\\
+
+Prima di poter formulare il modello matematico del quadrirotore è necessario fare un'ipotesi semplificativa. Ogni sistema rotante, infatti, risente del cosiddetto effetto giroscopico, cioè un fenomeno che tende a mantenere il sistema sul suo asse di rotazione. Risulta quindi più difficile cambiare l’assetto, ma siccome l’effetto è tanto più forte quanto più la velocità di rotazione è grande, e in questo caso non ci sono grandi velocità, l’effetto è trascurabile. Si può dimostrare che trascurandolo, il modello può essere quindi scritto con il seguente sistema di equazioni nel sistema di riferimento \emph{drone}.
 
 \begin{equation}
 	\begin{cases}
-	\Dot{u} = (vr - wq) + gsin((\theta) \\
-	\Dot{v} = (wp - ur) - gcos(\theta)sin(\phi) \\
-	\Dot{w} = (uq - vp) - gcos(\theta)sin(\phi) + \frac{U_1}{m} \\
+	\Dot{u} = (vr - wq) + g\sin((\theta) \\
+	\Dot{v} = (wp - ur) - g\cos(\theta)\sin(\phi) \\
+	\Dot{w} = (uq - vp) - g\cos(\theta)\sin(\phi) + \frac{U_1}{m} \\
 	\Dot{p} = \frac{I_{YY} - I_{ZZ}}{I_{XX}}qr + \frac{U_2}{I_{XX}} \\
 	\Dot{q} = \frac{I_{ZZ} - I_{XX}}{I_{YY}}pr + \frac{U_3}{I_{YY}} \\
 	\Dot{r} = \frac{I_{XX} - I_{YY}}{I_{ZZ}}pq + \frac{U_4}{I_{ZZ}}
@@ -255,13 +271,13 @@ Il termine $b$ è il cosiddetto coefficiente di thrust. È un coefficiente che l
 
 Dove $\Omega$ è la velocità di un generico rotore e $T$ è la spinta che genera verso l'alto. Si misura in $[N s^2]$ ed è considerato costante e uguale per tutti i rotori. La spinta verso l'altro è pertanto descritta dal termine di controllo $U_1$ nella \ref{defControls}.\\
 
-Il termine $d$ è il cosiddetto coefficiente di drag. Quando le pale di un rotore girano in un certo verso, nasce una forza dovuta alla resistenza del vento nel senso opposto che genera un momento. Nella dinamica del quadrirotore, il coefficiente $d$ incide sull'angolo di imbardata, legato alla variazione dei momenti. Anche questo coefficiente è considerato costante e uguale per tutti i rotori, si misura in $[N m s^2]$ ed è definito come segue.
+Il termine $d$ è il cosiddetto coefficiente di drag. Quando le pale di un rotore girano in un certo verso, nasce una forza dovuta alla resistenza del vento nel senso opposto che genera un momento. Nella dinamica del quadrirotore, il coefficiente $d$ incide sull'angolo di imbardata, legato alla variazione dei momenti. Anche questo coefficiente è considerato costante e uguale per tutti i rotori, si misura in $[N m s^2]$ ed è definito come segue:
 
 \begin{equation}
 	d = \frac{Q}{\Omega^2}
 \end{equation}
 
-Dove $Q$ è il momento della forza di trascinamento. Nella \ref{defControls} il termine $U_4$ tiene conto di questo contributo.\\
+dove $Q$ è il momento della forza di trascinamento. Nella \ref{defControls} il termine $U_4$ tiene conto di questo contributo.\\
 
 Poi, i termini $U_2$ e $U_3$ sono legati rispettivamente agli angoli di roll e pitch. Nello specifico, $U_2$ è legato alla differenza delle spinte date dai rotori di indice due e quattro, cioè (dalla \ref{thrustCoeff}) ai prodotti $b{\Omega_2}^2$ e $b{\Omega_4}^2$, poi moltiplicata per il braccio $l$. Analogo è il discorso per $U_3$, ma chiaramente interessa i rotori di indice uno e tre.\\
 
@@ -334,9 +350,19 @@ Somma e prodotto di due quaternioni sono definiti tenendo conto delle relazioni 
 \begin{equation}
 	 i^2 = j^2 = k^2 = ijk = -1
 	 \label{hamiltonQuat}
-\end{equation}
+\end{equation}\\
 
-Una relazione che lega gli angoli di Eulero ($\phi, \theta, \psi$) al quaternione unitario ($q$) che li rappresenta è mostrata dalla \ref{eulQuat}.
+Le relazioni che legano gli angoli di Eulero ($\phi, \theta, \psi$) al quaternione unitario ($q$) corrispondente sono mostrate nelle equazioni \ref{quatEul} e \ref{eulQuat}.
+
+\begin{equation}
+	\begin{cases}
+		q_0 = c(\frac{\phi}{2})c(\frac{\theta}{2})c(\frac{\psi}{2}) + s(\frac{\phi}{2})s(\frac{\theta}{2})s(\frac{\psi}{2}) \\
+		q_1 = s(\frac{\phi}{2})c(\frac{\theta}{2})c(\frac{\psi}{2}) - c(\frac{\phi}{2})s(\frac{\theta}{2})s(\frac{\psi}{2}) \\
+		q_2 = c(\frac{\phi}{2})s(\frac{\theta}{2})c(\frac{\psi}{2}) + s(\frac{\phi}{2})c(\frac{\theta}{2})s(\frac{\psi}{2}) \\
+		q_3 = c(\frac{\phi}{2})c(\frac{\theta}{2})s(\frac{\psi}{2}) - s(\frac{\phi}{2})s(\frac{\theta}{2})c(\frac{\psi}{2})
+	\end{cases}
+	\label{quatEul}
+\end{equation}
 
 \begin{equation}
 	\begin{cases}
@@ -345,7 +371,7 @@ Una relazione che lega gli angoli di Eulero ($\phi, \theta, \psi$) al quaternion
 		\psi = \tan^{-1} \left[\frac{2(q_1q_2 + q_0q_3)}{q_0^2 + q_1^2 - q_2^2 - q_3^2}\right]
 	\end{cases}
 	\label{eulQuat}
-\end{equation}
+\end{equation}\\
 
 Come detto, questa soluzione è ampiamente utilizzata in ambito informatico e robotico. Infatti, molti linguaggi di programmazione e molte librerie forniscono direttamente operazioni di conversione tra angoli di Eulero e quaternioni unitari, come si vedrà nel seguito.
 
