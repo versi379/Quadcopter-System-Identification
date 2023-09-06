@@ -224,7 +224,7 @@ J^{-1}
 \label{invJacobian}
 \end{equation}\\
 
-Prima di poter formulare il modello matematico del quadrirotore è necessario fare un'ipotesi semplificativa. Ogni sistema rotante, infatti, risente del cosiddetto effetto giroscopico, cioè un fenomeno che tende a mantenere il sistema sul suo asse di rotazione. Risulta quindi più difficile cambiare l’assetto, ma siccome l’effetto è tanto più forte quanto più la velocità di rotazione è grande, e in questo caso non ci sono grandi velocità, l’effetto è trascurabile. Si può dimostrare che trascurandolo, il modello può essere quindi scritto con il seguente sistema di equazioni nel sistema di riferimento \emph{drone}.
+Prima di poter formulare il modello matematico del quadrirotore è necessario fare un'ipotesi semplificativa. Ogni sistema rotante, infatti, risente del cosiddetto effetto giroscopico, cioè un fenomeno che tende a mantenere il sistema sul suo asse di rotazione. Risulta quindi più difficile cambiare l’assetto, ma siccome l’effetto è tanto più forte quanto più la velocità di rotazione è grande, e in questo caso non ci sono grandi velocità, l’effetto è trascurabile. Si può dimostrare che trascurandolo, il modello può essere quindi scritto con il seguente sistema di equazioni nel sistema di riferimento \emph{drone}:
 
 \begin{equation}
 	\begin{cases}
@@ -238,7 +238,7 @@ Prima di poter formulare il modello matematico del quadrirotore è necessario fa
 	\label{modelloQuadrirotoreDrone}
 \end{equation}
 
-Dove i termini $U_i$ ($i = 1,2,3,4$) sono i termini di controllo del quadrirotore e sono infatti definiti in funzione delle velocità angolari dei rotori $\Omega_i$ ($i = 1,2,3,4$), come mostra la \ref{defControls}.
+dove i termini $U_i$ ($i = 1,2,3,4$) sono i termini di controllo del quadrirotore e sono infatti definiti in funzione delle velocità angolari dei rotori $\Omega_i$ ($i = 1,2,3,4$), come mostra la \ref{defControls}.
 
 \begin{equation}
 	\begin{cases}
@@ -264,14 +264,14 @@ I_{XX} & 0 & 0\\
 
 Infine, vale la pena spiegare il significato dei coefficienti $b$ e $d$, che legano le velocità angolari dei rotori ai termini di controllo.\\
 
-Il termine $b$ è il cosiddetto coefficiente di thrust. È un coefficiente che lega la spinta alla velocità angolare secondo la seguente equazione.
+Il termine $b$ è il cosiddetto coefficiente di thrust. È un coefficiente che lega la spinta alla velocità angolare secondo la seguente equazione:
 
 \begin{equation}
 	b = \frac{T}{\Omega^2}
 	\label{thrustCoeff}
 \end{equation}
 
-Dove $\Omega$ è la velocità di un generico rotore e $T$ è la spinta che genera verso l'alto. Si misura in $[N s^2]$ ed è considerato costante e uguale per tutti i rotori. La spinta verso l'altro è pertanto descritta dal termine di controllo $U_1$ nella \ref{defControls}.\\
+dove $\Omega$ è la velocità di un generico rotore e $T$ è la spinta che genera verso l'alto. Si misura in $[N s^2]$ ed è considerato costante e uguale per tutti i rotori. La spinta verso l'altro è pertanto descritta dal termine di controllo $U_1$ nella \ref{defControls}.\\
 
 Il termine $d$ è il cosiddetto coefficiente di drag. Quando le pale di un rotore girano in un certo verso, nasce una forza dovuta alla resistenza del vento nel senso opposto che genera un momento. Nella dinamica del quadrirotore, il coefficiente $d$ incide sull'angolo di imbardata, legato alla variazione dei momenti. Anche questo coefficiente è considerato costante e uguale per tutti i rotori, si misura in $[N m s^2]$ ed è definito come segue:
 
