@@ -25,9 +25,7 @@ Un \emph{node} è un processo che compie una qualsiasi attività computazionale 
 
 Essendo \acs{ROS} progettato per essere modulare, tipicamente un sistema basato su di esso comprende numerosi nodi e in tal contesto sono interpretabili come moduli software, ognuno dei quali è incaricato di gestire un aspetto del comportamento del robot (e.g. parte decisionale, movimento, azionamento motori, ecc.).\\
 
-Un sistema il cui carico computazionale venga ripartito tra i vari nodi di cui è costituito ha innanzitutto il vantaggio di una maggiore tolleranza agli errori, potendo gestire indipendentemente il malfunzionamento del singolo nodo. La complessità del codice è ridotta se confrontata coi sistemi monolitici e i dettagli implementativi sono nascosti in quanto i singoli nodi offrono un’interfaccia composta da una \ac{API} minimale.\\
-
-Ogni nodo in esecuzione dispone di un cosiddetto "graph resource name", cioè un nome che lo identifica unicamente nel sistema, e di un tipo, che semplifica il processo di indirizzamento nel filesystem.
+Un sistema il cui carico computazionale venga ripartito tra i vari nodi di cui è costituito ha innanzitutto il vantaggio di una maggiore tolleranza agli errori, potendo gestire indipendentemente il malfunzionamento del singolo nodo. La complessità del codice è ridotta se confrontata coi sistemi monolitici e i dettagli implementativi sono nascosti in quanto i singoli nodi offrono un’interfaccia composta da una \ac{API} minimale.
 
 \subsection{Master}
 In un sistema basato su ROS, il \emph{master} è un server centralizzato che offre ai nodi un servizio di registrazione e di naming, similmente all’informazione data da un server \ac{DNS}. Permette infatti al singolo nodo di contattarne un secondo attraverso una metodologia peer-to-peer. Tiene inoltre traccia per ogni singolo \emph{topic} (trattati nel seguito) dei relativi nodi publisher e subscriber. Il \emph{master} offre anche il parameter server, cioè un server che offre un servizio di memorizzazione e consultazione di parametri a tempo di esecuzione (runtime) ai nodi che ne richiedono i servizi attraverso una \acs{API} di rete.
@@ -70,41 +68,42 @@ Per calcolare le trasformazioni tra due nodi qualsiasi, viene calcolato il cosid
 \begin{figure}[H]
 	\begin{center}
 	
-	\includegraphics[width=0.55\textwidth]{gfx/tfROS}
-    \caption[Task frames nel robot PR2 di Willow Garage.]{Task frames nel robot PR2 di Willow Garage, visualizzate in \acs{RViz}. I cilindri RGB rappresentano gli assi X, Y e Z dei riquadri di coordinate.}
+	\includegraphics[width=0.5\textwidth]{gfx/tfROS}
+    \caption[Task frames del robot PR2 di Willow Garage, in \acs{RViz}.]{Task frames nel robot PR2 di Willow Garage, visualizzate in \acs{RViz}. I cilindri RGB rappresentano gli assi X, Y e Z dei riquadri di coordinate.}
     \label{fig:tf_ROS}
     
     \vspace{30mm}
 
-	\includegraphics[width=0.7\textwidth]{gfx/ROS/rqt_rviz}
+	\includegraphics[width=0.5\textwidth]{gfx/ROS/rqt_rviz}
 	\caption[Task frames del quadrirotore simulato, in \acs{RViz}.]{Task frames del quadrirotore simulato, visualizzate in \acs{RViz}. Il riferimento del sistema a terra è indicato con \emph{map}, quello solidale al quadrirotore con \emph{base\_link}.}
 	\label{fig:droneRviz}
 		
 	\end{center}
 \end{figure}
 
-% ------------------------------ ARCHITETTURA SIM ------------------------------
+\pagebreak
 
-\section{Architettura Simulazione Quadrirotore}
+% ------------------------------ ARCHITETTURA SIM ------------------------------
+\section{Architettura di Simulazione}
 In questa sezione si entra nel dettaglio dell'architettura di simulazione utilizzata in \acs{ROS}, partendo dalla scelta del sistema operativo. È stato utilizzato il sistema operativo Linux Ubuntu versione 20.04 (Focal Fossa) in quanto compatibile e consigliato per la versione \acs{ROS} adottata (Noetic Ninjemys, rilasciata a Maggio 2020).
 
 \subsection{Gazebo}
 Gazebo è un simulatore 3D. Consente di creare uno scenario tridimensionale sul computer con robot, ostacoli e altri oggetti utili alla simulazione del robot in questione.\\
 
-In questo lavoro di tesi, si è fatto uso della repository \emph{iq\_sim} di Intelligent Quads, disponibile su GitHub \cite{iqSIM}. Questa repository contiene mondi gazebo per vari scenari e configurazioni di droni. Inoltre, è specificamente progettata per funzionare con il sistema di controllo ArduPilot e utilizza il plug-in gazebo ArduPilot per consentire al software di controllo ArduPilot di interfacciarsi e controllare il drone in gazebo.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\textwidth]{gfx/ROS/gazebo_new}
-	\caption[Quadrirotore nel mondo simulato.]{Quadrirotore nel mondo simulato \emph{runway.world} (pista di decollo) di Intelligent Quads, in Gazebo.}
-	\label{fig:gazebo}
-\end{figure}
+In questo lavoro di tesi, si è fatto uso della repository \emph{iq\_sim} di Intelligent Quads, disponibile su GitHub \cite{iqSIM}. Questa repository contiene mondi gazebo per vari scenari e configurazioni di droni. Inoltre, è specificamente progettata per funzionare con il sistema di controllo ArduPilot e utilizza il plug-in gazebo ArduPilot per consentire al software di controllo ArduPilot di interfacciarsi e controllare il drone in gazebo.\\
 
 Dopo aver clonato la repository sul computer utilizzato, per lanciare gazebo con il mondo desiderato basta eseguire da terminale il seguente comando.\\
 
 \begin{lstlisting}[language=bash, numbers=none]
   roslaunch iq_sim runway.launch
 \end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{gfx/ROS/gazebo_new}
+	\caption[Quadrirotore nel mondo simulato.]{Quadrirotore nel mondo simulato \emph{runway.world} (pista di decollo) di Intelligent Quads, in Gazebo.}
+	\label{fig:gazebo}
+\end{figure}
 
 \subsection{ArduCopter}
 Gli aeromobili a pilotaggio remoto (\acs{UAV}) sono sistemi che richiedono una rapida risposta al variare dei dati forniti dai sensori a bordo, per cui risulta fondamentale per il controllo del volo un software di autopilotaggio. Esistono diverse soluzioni, ma per questa tesi è stato considerato il software ArduCopter, cioè la versione per \acs{UAV} del più generale software ArduPilot.\\
@@ -117,7 +116,7 @@ Gli aeromobili a pilotaggio remoto (\acs{UAV}) sono sistemi che richiedono una r
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.55\textwidth]{gfx/ROS/ArduCopter}
+	\includegraphics[width=0.65\textwidth]{gfx/ROS/ArduCopter}
 	\caption[Interfaccia grafica ArduCopter.]{Interfaccia grafica ArduCopter.}
 	\label{fig:arduCopter}
 \end{figure}
@@ -139,6 +138,8 @@ Per completare la configurazione del sistema di simulazione si lancia il file \e
 \begin{lstlisting}[language=bash, numbers=none]
   roslaunch mavros apm.launch
 \end{lstlisting}
+
+\vspace{5mm}
 
 Questo si occupa di stabilire una connessione tra l'istanza \acs{ROS} in questione e il simulatore configurato precedentemente (Gazebo e ArduCopter). Una delle operazioni più rilevanti, svolta da questo eseguibile, è quella di inviare dati relativi ai \emph{tf} (task frames) coinvolti. In particolare, invia con una certa frequenza di trasmissione dati sui \emph{tf} in modo da mantenerli aggiornati in tempo reale. I \emph{tf} possono essere visualizzati non solo in \acs{RViz}, come mostra la Figura \ref{fig:droneRviz}, ma anche nell'albero dei \emph{tf} (tf\_tree), come mostra la Figura \ref{fig:tf_tree}.
 

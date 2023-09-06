@@ -1,3 +1,19 @@
 % CHAPTER 5
 
-\chapter{Conclusioni}\label{ch:conc}
+\chapter{Conclusioni e Sviluppi Futuri}\label{ch:conc}
+
+\section{Conclusioni}
+Nel Capitolo \ref{ch:uav} si è descritto nel dettaglio il modello matematico di un quadrirotore con disposizione delle eliche a X. Nel Capitolo \ref{ch:ros}, dopo aver spiegato brevemente il funzionamento di \acs{ROS}, sono stati descritti e spiegati i moduli software utilizzati per configurare il simulatore. Infine, nel Capitolo \ref{ch:ident} sono state identificate le tre funzioni di trasferimento \acs{SISO} cercate e, visto che per le simulazioni di volo si è fatto uso di un controllore di posizione, si è anche parlato del funzionamento e dell'implementazione di tale controllore.\\
+
+Le funzioni di trasferimento ricavate risultano sufficientemente compatibili con i dati input-output registrati nelle simulazioni e colgono le caratteristiche dinamiche essenziali del quadrirotore lungo tutti gli assi.
+
+\section{Sviluppi Futuri}
+Questo lavoro è un importante punto di partenza nello studio della dinamica di un quadrirotore ed è sicuramente utile per la progettazione e la simulazione di eventuali leggi di controllo. Tuttavia, può essere approfondito ulteriormente.\\
+
+Infatti, non solo l'identificazione di sistema dipende dal tipo del modello (white box, gray box e black box), ma varia anche in base alla sua struttura. In questo lavoro sono stati identificati tre modelli lineari tempo continui nel dominio di Laplace, ma esistono molte altre strutture e sono spiegate nel dettaglio nella documentazione ufficiale di MATLAB System Identification Toolbox \cite{sysIdMatArt} \cite{sysID}.\\
+
+Per un'identificazione più approfondita si potrebbe utilizzare un modello nello spazio di stato di tipo non lineare, in grado di descrivere la dinamica del sistema completa e non disaccoppiata lungo i tre assi principali. Poi, per ottenere una misura del grado di accuratezza delle funzioni di trasferimento \acs{SISO} individuate, sarebbe interessante confrontare il comportamento del sistema \acs{MIMO} ristretto a tali dinamiche disaccoppiate. In questo modo si potrebbe comprendere se effettivamente agendo su un particolare segnale di controllo si influenza solo il corrispondente grado di libertà, come si è assunto in questo lavoro, o se ci sono delle dipendenze più complesse interne al sistema (che potrebbero diventare oggetto di studio).\\
+
+Esistono anche modelli più avanzati per l'identificazione di sistemi non lineari, come i modelli ARX e i modelli Hammerstein-Wiener. Più informazioni relative a questi ultimi si trovano nella documentazione MATLAB \cite{sysIdMatArt} \cite{sysID}.\\
+
+Inoltre, si potrebbe utilizzare il software Simulink \cite{simulink} per progettare e simulare schemi di controllo sulla base del modello identificato.

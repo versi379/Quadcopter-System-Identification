@@ -6,7 +6,7 @@ Un aeromobile a pilotaggio remoto (\acs{UAV}) è un velivolo caratterizzato dall
 % ------------------------------ CLASSIFICAZIONE ------------------------------
 
 \section{Classificazione}
-In base al numero e alla configurazione dei rotori si possono distinguere diverse tipologie di droni, come mostrato in Figura \ref{fig:droneTypes}.\\
+In base al numero e alla configurazione dei rotori si possono distinguere diverse tipologie di droni \cite{droneClass}, come mostrato in Figura \ref{fig:droneTypes}.\\
 
 Il modello di drone più semplice è quello a singolo rotore. Presenta un solo rotore al suo interno e un secondo rotore di coda necessario per fornire il controllo. Questo modello si rivela un'ottima soluzione nel caso si debba trasportare dei carichi particolarmente pesanti per un breve tempo di volo.\\
 
@@ -23,11 +23,11 @@ Esistono anche configurazioni a sei e otto rotori. Queste configurazioni sono si
     \label{fig:droneTypes}
 \end{figure}
 
-Nel seguito si prenderà come riferimento un quadrirotore con struttura a X dato che presenta un modello fisico-matematico semplificato e rende pertanto più semplice il progetto di schemi di controllo. Inoltre, questa disposizione dei rotori minimizza la variazione di posizione del baricentro e risulta pertanto più semplice tenere traccia della traiettoria del drone nello spazio.
+Nel seguito si prenderà come riferimento un quadrirotore con struttura a X dato che presenta un modello fisico-matematico semplificato e rende pertanto più semplice il progetto di schemi di controllo e l'identificazione del sistema. Inoltre, questa disposizione dei rotori minimizza la variazione di posizione del baricentro e risulta pertanto più semplice tenere traccia della traiettoria del drone nello spazio.
 
 % ------------------------------ MODELLAZIONE ------------------------------
 
-\section{Modellazione Quadrirotore}
+\section{Modellazione Matematica di un Quadrirotore}
 Un robot, nello specifico un quadrirotore, può essere considerato come un corpo rigido che trasla e ruota in uno spazio tridimensionale. Pertanto, è necessario costruire un modello matematico in grado di descrivere in modo compatto il suo spostamento.\\
 
 Il modello fisico-matematico di un quadrirotore si può trovare con diversi formalismi, quali quello di Newton-Eulero e quello di Lagrange \cite{modelloQuad1} \cite{modelloQuad2} \cite{modelloQuad3}. Nel seguito si descrive il primo.\\
@@ -61,6 +61,8 @@ Il sistema \emph{drone} ha origine nel centro di massa del quadrirotore e in let
     \caption[\acs{ABC} di un QUAD I e di un QUAD X.]{\acs{ABC} di un QUAD I e di un QUAD X.}
     \label{fig:+andx}
 \end{figure}
+
+Figura \ref{fig:abc_frame} presenta i due sistemi di riferimento \emph{mondo} e \emph{drone}, secondo le ipotesi formulate.
 
 \begin{figure}[H]
     \centering
@@ -281,7 +283,7 @@ dove $Q$ è il momento della forza di trascinamento. Nella \ref{defControls} il 
 
 Poi, i termini $U_2$ e $U_3$ sono legati rispettivamente agli angoli di roll e pitch. Nello specifico, $U_2$ è legato alla differenza delle spinte date dai rotori di indice due e quattro, cioè (dalla \ref{thrustCoeff}) ai prodotti $b{\Omega_2}^2$ e $b{\Omega_4}^2$, poi moltiplicata per il braccio $l$. Analogo è il discorso per $U_3$, ma chiaramente interessa i rotori di indice uno e tre.\\
 
-Si può anche scrivere il modello dinamico riferito al sistema \emph{mondo} tramite il seguente sistema di equazioni \ref{modelloQuadrirotoreMondo}.
+Si può anche scrivere il modello dinamico riferito al sistema \emph{mondo} tramite il sistema di equazioni definito nella \ref{modelloQuadrirotoreMondo}.
 
 \begin{equation}
 	\begin{cases}
@@ -323,6 +325,8 @@ Introdotto da William Rowan Hamilton nel 1843 come estensione dei numeri comples
 \[ a + bi + cj + dk \]
 dove $a, b, c, d$ sono numeri reali e $i, j, k$ si comportano in modo simile all'unità immaginaria dei numeri complessi. Si può dire che la prima coordinata $a$ costituisce la parte scalare o reale del quaternione, mentre le rimanenti tre coordinate $b, c, d$ ne costituiscono la parte vettoriale o immaginaria.\\
 
+\pagebreak
+
 Pertanto, un quaternione è identificato da quattro numeri reali e può essere scritto come un vettore di $\mathbb{R}^4$ come segue.
 \[
 q = \begin{bmatrix}
@@ -337,11 +341,11 @@ Un quaternione unitario è un quaternione di norma unitaria.
 La totalità dei quaternioni unitari forma una ipersfera quadrimensionale in $\mathbb{R}^4$.
 \[ S^3 = \{ (q_0, q_1, q_2, q_3) \in \mathbb{R}^4 | q_0^2 + q_1^2 + q_2^2 + q_3^2 = 1\} \]
 
- Questi particolari quaternioni possono essere utilizzati per descrivere l'assetto del quadrirotore nel sistema di riferimento \acs{ABC} rispetto al sistema di riferimento inerziale fisso.
+ Questi particolari quaternioni possono essere utilizzati per descrivere l'assetto del quadrirotore nel sistema di riferimento \acs{ABC} rispetto al sistema di riferimento inerziale fisso \cite{quatAndRot}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{gfx/quaternion}
+    \includegraphics[width=0.4\textwidth]{gfx/quaternion}
     \caption[Rappresentazione grafica di una rotazione tramite un quaternione unitario.]{Rappresentazione grafica di una rotazione tramite un quaternione unitario.}
     \label{fig:quat}
 \end{figure}
@@ -350,7 +354,7 @@ Somma e prodotto di due quaternioni sono definiti tenendo conto delle relazioni 
 \begin{equation}
 	 i^2 = j^2 = k^2 = ijk = -1
 	 \label{hamiltonQuat}
-\end{equation}\\
+\end{equation}
 
 Le relazioni che legano gli angoli di Eulero ($\phi, \theta, \psi$) al quaternione unitario ($q$) corrispondente sono mostrate nelle equazioni \ref{quatEul} e \ref{eulQuat}.
 
@@ -377,13 +381,13 @@ Come detto, questa soluzione è ampiamente utilizzata in ambito informatico e ro
 
 % ------------------------------ CONTROLLO ------------------------------
 
-\section{Controllo}
+\section{Controllo di un Quadrirotore}
 Un quadrirotore a X presenta quattro rotori posizionati come in Figura \ref{fig:quadRotors}. Essendo i motori e le eliche sullo stesso piano, è necessario equilibrare il moto del drone impiegando due motori che ruotano in senso orario e due che ruotano in senso antiorario. Nello specifico, i rotori M1 e M4 ruotano in senso orario (clockwise o CW), mentre i rotori M2 e M3 ruotano in senso antiorario (counterclockwise o CCW). Questa contrapposizione permette di annullare l'energia rotatoria dei motori e quindi eventuali coppie di reazione.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.3\textwidth]{gfx/rotori_quadrotor}
-    \caption[Disposizione e funzionamento dei rotori di un quadrirotore con eliche disposte a X.]{Disposizione e funzionamento dei rotori di un quadrirotore con eliche disposte a X.}
+    \caption[Funzionamento dei rotori di un quadrirotore a X.]{Disposizione e funzionamento dei rotori di un quadrirotore con eliche disposte a X.}
     \label{fig:quadRotors}
 \end{figure}
 
@@ -400,8 +404,6 @@ Quando il vettore di spinta (thrust) è allineato alla verticale (direzione orto
     \caption[Manovra di spinta di un quadrirotore.]{Manovra di spinta: la velocità di tutti i rotori aumenta di una quantità costante.}
     \label{fig:thrust_quad}
 \end{figure}
-
-\pagebreak
 
 \section*{Manovra di Rollio}
 Il rollio contribuisce allo spostamento del drone lungo l'asse Y (destra e sinistra). Si ottiene lasciando invariate le velocità dei motori anteriore (FRONT) e posteriore (REAR), e cambiando di una certa quantità le velocità dei motori di destra (RIGHT) e sinistra (LEFT); come mostrato in Figura \ref{fig:roll_quad}.
@@ -422,8 +424,6 @@ Il beccheggio contribuisce allo spostamento del drone lungo l'asse X (avanti e i
     \caption[Manovra di beccheggio di un quadrirotore.]{Manovra di beccheggio: cambia la velocità dei rotori anteriore (FRONT) e posteriore (REAR).}
     \label{fig:pitch_quad}
 \end{figure}
-
-\pagebreak
 
 \section*{Manovra di Imbardata}
 L'imbardata è il movimento più complesso. L’idea fondamentale è cambiare il momento rispetto all’asse z, immaginato uscente dal piano dei rotori, e mantenere costante la spinta verso l’alto. Per ottenere questo, si aumenta la velocità dei rotori di due motori opposti, e si diminuisce la velocità dei due restanti rotori. In questo modo si avranno, per esempio, due rotori che girano velocemente in senso orario, e due che girano più lentamente in senso antiorario. Nel complesso ci sarà dunque un momento che fa girare il drone intorno all’asse z. Se le velocità sono opportunamente scelte, non ci sarà un cambiamento della spinta verso l’alto. La Figura \ref{fig:yaw_quad} riassume quanto detto.

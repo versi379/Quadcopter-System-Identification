@@ -1,3 +1,4 @@
+1
 @misc{ABI,
   author = {ABI Research},
   title = {State of the robotics market},
@@ -5,11 +6,20 @@
   note = {\url{https://go.abiresearch.com/lp-state-of-the-robotics-market}},
 }
 
-@misc{ROS,
-  title = {ROS},
-  note = {\url{https://www.ros.org/}},
+2
+@incollection{droneClass,
+title = {Chapter 8 - Unmanned Aerial Systems},
+editor = {James S. Aber and Irene Marzolff and Johannes B. Ries and Susan E.W. Aber},
+booktitle = {Small-Format Aerial Photography and UAS Imagery (Second Edition)},
+publisher = {Academic Press},
+edition = {Second Edition},
+pages = {119-139},
+year = {2019},
+url = {https://www.sciencedirect.com/science/article/pii/B9780128129425000082},
+author = {James S. Aber and Irene Marzolff and Johannes B. Ries and Susan E.W. Aber},
 }
 
+3
 @misc{modelloQuad1,
   title={Modelling, Identification and Control of a Quadrotor Helicopter},
   author={Bresciani, Tommaso},
@@ -17,6 +27,7 @@
   publisher={Department of Automatic Control, Lund University},
 }
 
+4
 @misc{modelloQuad2,
   title={Design and Control of Quadrotors with Application to Autonomous Flying},
   author={Bouabdallah, Samir},
@@ -24,6 +35,7 @@
   publisher={École Polytechnique Federale de Lausanne},
 }
 
+5
 @misc{modelloQuad3,
 	year = {2017},
 	month = {dec},
@@ -32,13 +44,26 @@
 	journal = {IOP Conference Series: Materials Science and Engineering},
 }
 
-@misc{decoupledDynamics,
-	title = {Identification and Validation of a Quadrotor's Model Dynamics},
-	author = {de Oliveira, Rui Miguel Martins},
-	year = {October 2014},
-	publisher = {Instituto Superior Técnico},
+6
+@misc{quatAndRot,
+author = {Vicci, Leandra},
+year = {2001},
+title = {Quaternions and Rotations in 3-Space: The Algebra and its Geometric Interpretation}
 }
 
+7
+@misc{ROS,
+  title = {ROS},
+  note = {\url{https://www.ros.org/}},
+}
+
+8
+@misc{ROS2,
+	title = {ROS 2},
+	note = {\url{https://docs.ros.org/en/iron/index.html}},
+}
+
+9
 @misc{tf,
         title = {tf: The transform library},
         booktitle = {Technologies for Practical Robot Applications (TePRA), 2013 IEEE International Conference on},
@@ -49,6 +74,7 @@
         author = {Foote, Tully},
 }
 
+10
 @misc{SLERP,
   title={Quaternions and SLERP},
   author={Kremer, Verena Elisabeth},
@@ -56,57 +82,108 @@
   year={2008},
 }
 
+11
 @misc{iqSIM,
 	title = {IQ Simulations},
 	author = {Intelligent Quads},
 	note = {\url{https://github.com/Intelligent-Quads/iq_sim}},
 }
 
+12
+@misc{sitl,
+	title = {Software In The Loop (SITL)},
+	note = {\url{https://ardupilot.org/dev/docs/sitl-simulator-software-in-the-loop.html}},
+}
+
+13
 @misc{mavros,
 	title = {MAVROS},
 	note = {\url{https://github.com/mavlink/mavros}},
 }
 
-@misc{numPy,
-	title = {NumPy},
-	note = {\url{https://numpy.org/}},
+14
+@book{sysIdMatArt,
+  title={System identification toolbox: User's guide},
+  author={Ljung, Lennart},
+  year={1995},
+  publisher={Citeseer}
 }
 
-@misc{sciPy,
-	title = {SciPy},
-	note = {\url{https://scipy.org/}},
+15
+@misc{sysID,
+	title = {System Identification Toolbox},
+	author = {MATLAB},
+	note = {\url{https://it.mathworks.com/help/ident/}},
 }
 
+16
 @misc{compare,
 	title = {Compare},
 	author = {MATLAB},
 	note = {\url{https://it.mathworks.com/help/ident/ref/compare.html}},
 }
 
-@misc{sitl,
-	title = {Software In The Loop (SITL)},
-	note = {\url{https://ardupilot.org/dev/docs/sitl-simulator-software-in-the-loop.html}},
+17
+@ARTICLE{idEsempio,
+  author={Bergamasco, Marco and Lovera, Marco},
+  journal={IEEE Transactions on Control Systems Technology}, 
+  title={Identification of Linear Models for the Dynamics of a Hovering Quadrotor}, 
+  year={2014},
+  volume={22},
+  number={5},
+  pages={1696-1707},}
+
+18
+@inproceedings{controlQuad,
+author = {Alpen, M. and Frick, K. and Horn, J.},
+year = {2010},
+month = {01},
+pages = {2329 - 2334},
+title = {Nonlinear modeling and position control of an industrial quadrotor with on-board attitude control},
 }
 
-@misc{ROS2,
-	title = {ROS 2},
-	note = {\url{https://docs.ros.org/en/iron/index.html}},
+19
+@inproceedings{controlloQuad2,
+author = {H., David},
+year = {2002},
+month = {07},
+pages = {1263-1263},
+title = {A flight control system for aerial robots: Algorithms and experiments},
+volume = {35},
+isbn = {9783902661746},
+journal = {IFAC Proceedings Volumes},
 }
 
+20
+@misc{numPy,
+	title = {NumPy},
+	note = {\url{https://numpy.org/}},
+}
+
+21
+@misc{sciPy,
+	title = {SciPy},
+	note = {\url{https://scipy.org/}},
+}
+
+22
 @misc{savemat,
 	title = {scipy.io.savemat},
-	author = {SciPY},
+	author = {SciPy},
 	note = {\url{https://docs.scipy.org/doc/scipy/reference/generated/scipy.io.savemat.html}},
 }
 
-@misc{rotation,
-	title = {scipy.spatial.transform.Rotation},
-	author = {SciPY},
-	note = {\url{https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html}},
+23
+@misc{decoupledDynamics,
+	title = {Identification and Validation of a Quadrotor's Model Dynamics},
+	author = {de Oliveira, Rui Miguel Martins},
+	year = {October 2014},
+	publisher = {Instituto Superior Técnico},
 }
 
-@misc{sysID,
-	title = {System Identification Toolbox},
+24
+@misc{simulink,
+	title = {Simulink},
 	author = {MATLAB},
-	note = {\url{https://it.mathworks.com/help/ident/}},
+	note = {\url{https://it.mathworks.com/products/simulink.html}},
 }
