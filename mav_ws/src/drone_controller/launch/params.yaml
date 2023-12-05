@@ -1,0 +1,49 @@
+# Controller Parameters
+fs: 100
+Tc: 0.01
+angle_mode: true
+exp_acrobatic_model: true # new model in test phase
+trust_as_trust: true # must be the same on PixRacer (GUID_OPTIONS parameter on ArduPilot)
+#static_trust: 0.225  # PixRacer PRO + JetsonNX
+static_trust: 0.375  # Gazebo
+world_frame: "map"
+# drone_frame: "drone_1" # PixRacer
+drone_frame: "base_link" # Gazebo
+
+# PID Pitch
+Kp_x: 4.0
+Ki_x: 1.0
+Kd_x: 2.0
+init_d_x: 0.0
+output_limit_min_x: -4.0
+output_limit_max_x: 4.0
+windup_limit_min_x: -2.0
+windup_limit_max_x: 2.0
+
+# PID Roll
+Kp_y: 4.0
+Ki_y: 1.0
+Kd_y: 2.0
+init_d_y: 0.0
+output_limit_min_y: -4.0
+output_limit_max_y: 4.0
+windup_limit_min_y: -2.0
+windup_limit_max_y: 2.0
+
+# PID Trust
+Kp_z: 4.5
+Ki_z: 1.2
+Kd_z: 3.0
+init_d_z: 0.0
+output_limit_min_z: -9.8
+output_limit_max_z: 9.8
+windup_limit_min_z: -4.0
+windup_limit_max_z: 4.0
+
+# Room Offset
+room_max_x: 0.80
+room_min_x: -0.65
+room_max_y: 0.8
+room_min_y: -2.1
+room_max_z: 1.5
+room_min_z: 0.04

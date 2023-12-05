@@ -1,0 +1,6 @@
+devel_space: /home/giovanni/mav_ws/devel
+install: false
+install_space: /home/giovanni/mav_ws/install
+profile: default
+source_space: /home/giovanni/mav_ws/src
+workspace: /home/giovanni/mav_ws

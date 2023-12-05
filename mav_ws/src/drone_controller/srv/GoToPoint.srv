@@ -1,0 +1,3 @@
+geometry_msgs/PoseStamped pose    		# Position of the goal
+---
+bool ack 			# acknowledged information

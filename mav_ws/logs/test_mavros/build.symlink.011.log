@@ -1,0 +1,5 @@
+Linked: (/home/giovanni/mav_ws/devel/.private/test_mavros/share/test_mavros/cmake/test_mavrosConfig.cmake, /home/giovanni/mav_ws/devel/share/test_mavros/cmake/test_mavrosConfig.cmake)
+Linked: (/home/giovanni/mav_ws/devel/.private/test_mavros/share/test_mavros/cmake/test_mavrosConfig-version.cmake, /home/giovanni/mav_ws/devel/share/test_mavros/cmake/test_mavrosConfig-version.cmake)
+Linked: (/home/giovanni/mav_ws/devel/.private/test_mavros/lib/libmavros_sitl_test.so, /home/giovanni/mav_ws/devel/lib/libmavros_sitl_test.so)
+Linked: (/home/giovanni/mav_ws/devel/.private/test_mavros/lib/test_mavros/sitl_test_node, /home/giovanni/mav_ws/devel/lib/test_mavros/sitl_test_node)
+Linked: (/home/giovanni/mav_ws/devel/.private/test_mavros/lib/pkgconfig/test_mavros.pc, /home/giovanni/mav_ws/devel/lib/pkgconfig/test_mavros.pc)

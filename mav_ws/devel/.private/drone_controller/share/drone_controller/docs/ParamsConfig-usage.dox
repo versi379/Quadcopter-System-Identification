@@ -1,0 +1,44 @@
+\subsubsection usage Usage
+\verbatim
+<node name="drone_controller" pkg="drone_controller" type="drone_controller">
+  <param name="room_max_x" type="double" value="0.0" />
+  <param name="room_min_x" type="double" value="0.0" />
+  <param name="room_max_y" type="double" value="0.0" />
+  <param name="room_min_y" type="double" value="0.0" />
+  <param name="room_max_z" type="double" value="0.0" />
+  <param name="room_min_z" type="double" value="0.0" />
+  <param name="Kp_x" type="double" value="4.0" />
+  <param name="Ki_x" type="double" value="1.0" />
+  <param name="Kd_x" type="double" value="2.0" />
+  <param name="init_d_x" type="double" value="0.0" />
+  <param name="output_limit_min_x" type="double" value="-4.0" />
+  <param name="output_limit_max_x" type="double" value="4.0" />
+  <param name="windup_limit_min_x" type="double" value="-4.0" />
+  <param name="windup_limit_max_x" type="double" value="4.0" />
+  <param name="Kp_y" type="double" value="4.0" />
+  <param name="Ki_y" type="double" value="1.0" />
+  <param name="Kd_y" type="double" value="2.0" />
+  <param name="init_d_y" type="double" value="0.0" />
+  <param name="output_limit_min_y" type="double" value="-4.0" />
+  <param name="output_limit_max_y" type="double" value="4.0" />
+  <param name="windup_limit_min_y" type="double" value="-4.0" />
+  <param name="windup_limit_max_y" type="double" value="4.0" />
+  <param name="Kp_z" type="double" value="4.5" />
+  <param name="Ki_z" type="double" value="1.2" />
+  <param name="Kd_z" type="double" value="3.0" />
+  <param name="init_d_z" type="double" value="0.0" />
+  <param name="output_limit_min_z" type="double" value="-9.8" />
+  <param name="output_limit_max_z" type="double" value="9.8" />
+  <param name="windup_limit_min_z" type="double" value="-9.8" />
+  <param name="windup_limit_max_z" type="double" value="9.8" />
+  <param name="fs" type="int" value="15" />
+  <param name="Tc" type="double" value="3.0" />
+  <param name="angle_mode" type="bool" value="True" />
+  <param name="exp_acrobatic_model" type="bool" value="False" />
+  <param name="trust_as_trust" type="bool" value="True" />
+  <param name="static_trust" type="double" value="0.225" />
+  <param name="world_frame" type="str" value="world" />
+  <param name="drone_frame" type="str" value="drone" />
+</node>
+\endverbatim
+

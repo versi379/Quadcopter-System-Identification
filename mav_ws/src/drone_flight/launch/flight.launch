@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="drone_flight" type="drone_flight_test.py" respawn="false" name="drone_flight" output="screen" />
+</launch>

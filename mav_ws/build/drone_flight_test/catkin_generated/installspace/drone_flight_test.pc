@@ -1,0 +1,8 @@
+prefix=/home/giovanni/mav_ws/install
+
+Name: drone_flight_test
+Description: Description of drone_flight_test
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

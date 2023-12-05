@@ -1,0 +1,3 @@
+Symlinking /home/giovanni/mav_ws/devel/share/drone_flight_test/cmake/drone_flight_testConfig.cmake
+Symlinking /home/giovanni/mav_ws/devel/share/drone_flight_test/cmake/drone_flight_testConfig-version.cmake
+Symlinking /home/giovanni/mav_ws/devel/lib/pkgconfig/drone_flight_test.pc

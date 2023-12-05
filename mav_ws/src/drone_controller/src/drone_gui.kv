@@ -1,0 +1,92 @@
+FloatLayout:
+    MDRaisedButton:
+        id: take_off_button
+        text: "Take Off"
+        size_hint: 0.27, 0.086
+        pos_hint: {"center_x": .2, "center_y": .48}
+        md_bg_color: 0, 1, 0, 1
+        on_press: app.take_off(*args)
+
+    MDRaisedButton:
+        id: go_home_button
+        text: "Go Home"
+        size_hint: 0.27, 0.086
+        pos_hint: {"center_x": .2, "center_y": .3}
+        md_bg_color: 1, 0, 0, 1
+        on_press: app.go_home(*args)
+
+    MDRaisedButton:
+        id: land_button
+        text: "Land"
+        size_hint: 0.27, 0.086
+        pos_hint: {"center_x": .8, "center_y": .3}
+        md_bg_color: 1, 0, 0, 1
+        on_press: app.land(*args)
+
+    MDRaisedButton:
+        id: go_to_point_button
+        text: "Go To Point"
+        size_hint: 0.27, 0.086
+        pos_hint: {"center_x": .5, "center_y": .65}
+        md_bg_color: 1, 0, 0, 1
+        on_press: app.go_to_point(*args)
+
+    MDTextField:
+        id: go_to_point_frame_text
+        text: "drone_1"
+        size_hint: 0.27, 0.15
+        pos_hint: {"center_x": .5, "center_y": .91}
+        hint_text: "Frame"
+        write_tab: False
+
+    MDTextField:
+        id: go_to_point_x_text
+        text: "0.0"
+        size_hint: 0.2, 0.15
+        pos_hint: {"center_x": .15, "center_y": .78}
+        hint_text: "X"
+        write_tab: False
+
+    MDTextField:
+        id: go_to_point_y_text
+        text: "0.0"
+        size_hint: 0.2, 0.15
+        pos_hint: {"center_x": .38, "center_y": .78}
+        hint_text: "Y"
+        write_tab: False
+
+    MDTextField:
+        id: go_to_point_z_text
+        text: "0.0"
+        size_hint: 0.2, 0.15
+        pos_hint: {"center_x": .62, "center_y": .78}
+        hint_text: "Z"
+        write_tab: False
+
+    MDTextField:
+        id: go_to_point_yaw_text
+        text: "0.0"
+        size_hint: 0.2, 0.15
+        pos_hint: {"center_x": .85, "center_y": .78}
+        hint_text: "YAW"
+        write_tab: False
+
+    MDTextField:
+        id: take_off_text
+        text: "0.4"
+        size_hint: 0.27, 0.15
+        pos_hint: {"center_x": .8, "center_y": .48}
+        hint_text: "Take Off meters"
+        write_tab: False
+
+    MDLabel:
+        id: log_title_label
+        text: "Log"
+        halign: "center"
+        size_hint: 0.27, 0.15
+        pos_hint: {"center_x": .5, "center_y": .18}
+
+    MDLabel:
+        id: log_label
+        size_hint: 0.8, 0.3
+        pos_hint: {"center_x": .5, "center_y": .09}

@@ -1,0 +1,43 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~room_max_x" : \b [double] Distance to the nearest obstacle in the positive X-Axis (world frame) min: -15.0, default: 0.0, max: 15.0
+- \b "~room_min_x" : \b [double] Distance to the nearest obstacle in the negative X-Axis (world frame) min: -15.0, default: 0.0, max: 15.0
+- \b "~room_max_y" : \b [double] Distance to the nearest obstacle in the positive Y-Axis (world frame) min: -15.0, default: 0.0, max: 15.0
+- \b "~room_min_y" : \b [double] Distance to the nearest obstacle in the negative Y-Axis (world frame) min: -15.0, default: 0.0, max: 15.0
+- \b "~room_max_z" : \b [double] Distance to the nearest obstacle in the positive Z-Axis (world frame) min: -15.0, default: 0.0, max: 15.0
+- \b "~room_min_z" : \b [double] Distance to the nearest obstacle in the negative Z-Axis (world frame) min: -15.0, default: 0.0, max: 15.0
+- \b "~Kp_x" : \b [double] PID Kp min: 0.0, default: 4.0, max: 10.0
+- \b "~Ki_x" : \b [double] PID Ki min: 0.0, default: 1.0, max: 3.0
+- \b "~Kd_x" : \b [double] PID Kd min: 0.0, default: 2.0, max: 10.0
+- \b "~init_d_x" : \b [double] Initialization Value for the integral contribution min: 0.0, default: 0.0, max: 10.0
+- \b "~output_limit_min_x" : \b [double] Lower-bound of the PID output min: -8.0, default: -4.0, max: 0.0
+- \b "~output_limit_max_x" : \b [double] Upper-bound of the PID output min: 0.0, default: 4.0, max: 8.0
+- \b "~windup_limit_min_x" : \b [double] Lower-bound of the PID windup min: -8.0, default: -4.0, max: 0.0
+- \b "~windup_limit_max_x" : \b [double] Upper-bound of the PID windup min: 0.0, default: 4.0, max: 8.0
+- \b "~Kp_y" : \b [double] PID Kp min: 0.0, default: 4.0, max: 10.0
+- \b "~Ki_y" : \b [double] PID Ki min: 0.0, default: 1.0, max: 3.0
+- \b "~Kd_y" : \b [double] PID Kd min: 0.0, default: 2.0, max: 10.0
+- \b "~init_d_y" : \b [double] Initialization Value for the integral contribution min: 0.0, default: 0.0, max: 10.0
+- \b "~output_limit_min_y" : \b [double] Lower-bound of the PID output min: -8.0, default: -4.0, max: 0.0
+- \b "~output_limit_max_y" : \b [double] Upper-bound of the PID output min: 0.0, default: 4.0, max: 8.0
+- \b "~windup_limit_min_y" : \b [double] Lower-bound of the PID windup min: -8.0, default: -4.0, max: 0.0
+- \b "~windup_limit_max_y" : \b [double] Upper-bound of the PID windup min: 0.0, default: 4.0, max: 8.0
+- \b "~Kp_z" : \b [double] PID Kp min: 0.0, default: 4.5, max: 10.0
+- \b "~Ki_z" : \b [double] PID Ki min: 0.0, default: 1.2, max: 3.0
+- \b "~Kd_z" : \b [double] PID Kd min: 0.0, default: 3.0, max: 10.0
+- \b "~init_d_z" : \b [double] Initialization Value for the integral contribution min: 0.0, default: 0.0, max: 10.0
+- \b "~output_limit_min_z" : \b [double] Lower-bound of the PID output min: -20.0, default: -9.8, max: 0.0
+- \b "~output_limit_max_z" : \b [double] Upper-bound of the PID output min: 0.0, default: 9.8, max: 20.0
+- \b "~windup_limit_min_z" : \b [double] Lower-bound of the PID windup min: -20.0, default: -9.8, max: 0.0
+- \b "~windup_limit_max_z" : \b [double] Upper-bound of the PID windup min: 0.0, default: 9.8, max: 20.0
+- \b "~fs" : \b [int] Controller frequency min: 5, default: 15, max: 100
+- \b "~Tc" : \b [double] Time constant to reach the set point min: 1.0, default: 3.0, max: 6.0
+- \b "~angle_mode" : \b [bool] Enable Angle-Mode (Acrobatic if disabled) min: False, default: True, max: True
+- \b "~exp_acrobatic_model" : \b [bool] Enable Experimental Acrobatic Model min: False, default: False, max: True
+- \b "~trust_as_trust" : \b [bool] SetAttitudeTarget interprets Thrust As Thrust min: False, default: True, max: True
+- \b "~static_trust" : \b [double] Trust needed to hover min: 0.0, default: 0.225, max: 1.0
+- \b "~world_frame" : \b [str] World Frame min: , default: world, max: 
+- \b "~drone_frame" : \b [str] Drone Frame min: , default: drone, max: 
+

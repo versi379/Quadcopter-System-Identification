@@ -1,0 +1,8 @@
+<launch>
+    <remap to="/move_base_simple/goal" from="/drone_controller/goal"/>
+
+    <rosparam file="$(find drone_controller)/launch/params_giuseppe.yaml" command="load" ns="drone_controller" />
+    <node pkg="drone_controller" type="controller.py" respawn="false" name="drone_controller" output="screen" />
+    <node pkg="drone_controller" type="gui.py" respawn="false" name="drone_gui" output="screen" />
+
+</launch>
