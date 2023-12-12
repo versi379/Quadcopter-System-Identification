@@ -1,0 +1,1 @@
+/home/giovanni/mav_ws/devel/.private/libmavconn/share/libmavconn/cmake/libmavconnConfig.cmake
