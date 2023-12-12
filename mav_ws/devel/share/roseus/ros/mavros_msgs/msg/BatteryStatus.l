@@ -1,1 +1,0 @@
-/home/giovanni/mav_ws/devel/.private/mavros_msgs/share/roseus/ros/mavros_msgs/msg/BatteryStatus.l

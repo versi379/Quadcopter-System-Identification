@@ -1,1 +1,0 @@
-/home/giovanni/mav_ws/devel/.private/drone_controller/share/roseus/ros/drone_controller/srv/GoToPoint.l
