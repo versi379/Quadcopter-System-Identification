@@ -1,5 +1,0 @@
-drone_flight
-/home/giovanni/mav_ws/devel/.private/drone_flight/cmake.lock /home/giovanni/mav_ws/devel/./cmake.lock
-/home/giovanni/mav_ws/devel/.private/drone_flight/share/drone_flight/cmake/drone_flightConfig-version.cmake /home/giovanni/mav_ws/devel/share/drone_flight/cmake/drone_flightConfig-version.cmake
-/home/giovanni/mav_ws/devel/.private/drone_flight/share/drone_flight/cmake/drone_flightConfig.cmake /home/giovanni/mav_ws/devel/share/drone_flight/cmake/drone_flightConfig.cmake
-/home/giovanni/mav_ws/devel/.private/drone_flight/lib/pkgconfig/drone_flight.pc /home/giovanni/mav_ws/devel/lib/pkgconfig/drone_flight.pc
