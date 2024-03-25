@@ -1,8 +1,0 @@
-prefix=/home/giovanni/mav_ws/devel/.private/drone_flight
-
-Name: drone_flight
-Description: Description of drone_flight
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

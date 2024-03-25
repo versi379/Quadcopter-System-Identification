@@ -1,1 +1,0 @@
-/home/giovanni/mav_ws/devel/.private/drone_flight_test/lib/pkgconfig/drone_flight_test.pc

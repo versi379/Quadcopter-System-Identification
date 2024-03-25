@@ -1,1 +1,0 @@
-/home/giovanni/mav_ws/devel/.private/drone_flight/share/drone_flight/cmake/drone_flightConfig.cmake
